@@ -1,1 +1,3 @@
-# rocketchip_tests
+# Rocketchip Tests
+
+## Expected vs. Observed Peaks
