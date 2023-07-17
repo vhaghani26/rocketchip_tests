@@ -11,6 +11,7 @@ Note: I ran this script in the exp_vs_obs/ directory:
 
 import textwrap
 import os
+import pandas as pd
 import sys # only for sys exit
 
 #############################################
@@ -23,6 +24,10 @@ peaktypes = ["narrow", "broad"]
 aligners = ["bwa_mem", "bowtie2", "STAR"]
 peakcallers = ["macs3", "cisgenome", "genrich", "pepr"]
 deduplicators = ["samtools", "no_deduplication", "sambamba", "picard"]
+num_tests = 6
+
+# Create DataFrame for peak counting 
+#df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Expected_Peaks", "Observed_Peaks"])
 
 ################################
 ## Set up Directory Structure ##
@@ -60,22 +65,22 @@ for control in controltypes:
             for aligner in aligners:
                 for peakcaller in peakcallers:
                     for deduplicator in deduplicators:
-                        for i in range(1,7):
+                        for i in range(1, num_tests + 1):
                             if "control" == "with_control":
                                 proj_file_info = textwrap.dedent(f"""
                                 Author: Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang
                                 Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
                                 Genome:
                                 Name: genome
-                                Location: '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
+                                Location: 'seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
                                 Reads:
                                 Samples:
                                     grp1: 
-                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
-                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
+                                    - 'seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
+                                    - 'seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
                                 Controls:
                                     ctl1: 
-                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/input'
+                                    - 'seq_data/{readtype}_{peaktype}/test_{i}/input'
                                 Readtype: {readtype}
                                 Peaktype: {peaktype}
                                 Aligner: {aligner}
@@ -89,15 +94,15 @@ for control in controltypes:
                                 Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
                                 Genome:
                                 Name: genome
-                                Location: '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
+                                Location: 'seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
                                 Reads:
                                 Samples:
                                     grp1: 
-                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
-                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
+                                    - 'seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
+                                    - 'seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
                                 Controls:
                                     ctl1: 
-                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/input'
+                                    - 'seq_data/{readtype}_{peaktype}/test_{i}/input'
                                 Readtype: {readtype}
                                 Peaktype: {peaktype}
                                 Aligner: {aligner}
@@ -105,48 +110,28 @@ for control in controltypes:
                                 Peakcaller: {peakcaller}
                                 Threads: 1
                                 """)
-                            print(f'Generating project_files/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}.yaml...')
-                            os.system(f'touch project_files/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}.yaml')
-                            with open(f'project_files/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}.yaml', 'w') as f:
+                            print(f'Generating project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml...')
+                            os.system(f'touch project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml')
+                            with open(f'project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml', 'w') as f:
                                 f.write(f'{proj_file_info}')
-                            os.system(f'sed -i \'1d\' project_files/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}.yaml')
-    
-    
-    
-    
-    #!/usr/bin/env python3
-    
-    '''
-    Note: I ran this script in the main rocketchip directory using:
-        python3 exp_vs_obs/02_rocketchip_snakefiles.py
-    '''
-    
-    import os
-    
-    readtypes = ["paired", "single"]
-    peaktypes = ["broad", "narrow"]
-    aligners = ["bowtie2", "bwa_mem", "STAR"]
-    peakcallers = ["macs3", "genrich", "pepr", "cisgenome"]
-    deduplicators = ["no_deduplication", "samtools", "sambamba", "picard"]
-    
-    for readtype in readtypes:
-        for peaktype in peaktypes:
-            for aligner in aligners:
-                for peakcaller in peakcallers:
-                    for deduplicator in deduplicators:
-                        for i in range(1,7):
+                            os.system(f'sed -i \'1d\' project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml')
+
+#####################
+## Make Snakefiles ##
+#####################  
+
                             # Make the directory structure if it does not already exist
-                            if not os.path.exists(f'exp_vs_obs/snakefiles/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}'):
-                                os.system(f'mkdir exp_vs_obs/snakefiles/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}')
+                            if not os.path.exists(f'snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}'):
+                                os.system(f'mkdir snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
                             
                             # Create the snakefiles using Rocketchip 
-                            print(f"Generating exp_vs_obs/snakefiles/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}")
-                            os.system(f'python3 rocketchip exp_vs_obs/project_files/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}.yaml --data exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i} --src . --output_file exp_vs_obs/snakefiles/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}')
+                            print(f"Generating snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}")
+                            os.system(f'python3 ../rocketchip project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml --data seq_data/{readtype}_{peaktype}/test_{i} --src . --output_file snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
                             
                             # MACS3 has an issue with small read files requiring the --nomodel flag, so I will manually add it for the single-end data that are having problems with peak-calling
                             if readtype == "single" and peakcaller == "macs3":
-                                print(f'Adding --nomodel flag in MACS3 for snakefile exp_vs_obs/snakefiles/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}')
-                                file_to_open = f'exp_vs_obs/snakefiles/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}'
+                                print(f'Adding --nomodel flag in MACS3 for snakefile snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
+                                file_to_open = f'snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}'
                                 # Read in the file
                                 with open(file_to_open, 'r') as file :
                                     filedata = file.read()
@@ -155,63 +140,24 @@ for control in controltypes:
                                 # Write the file out again
                                 with open(file_to_open, 'w') as file:
                                     file.write(filedata)
-                                
-                                
-    #!/usr/bin/env python3
-    
-    import os
-    
-    '''
-    Note: I ran this script in the main rocketchip directory using:
-        python3 exp_vs_obs/03_run_snakefiles.py
-    '''
-    
-    readtypes = ["paired", "single"]
-    peaktypes = ["broad", "narrow"]
-    aligners = ["bowtie2", "bwa_mem", "STAR"]
-    peakcallers = ["genrich", "macs3", "pepr", "cisgenome"]
-    deduplicators = ["no_deduplication", "samtools", "sambamba", "picard"]
-    
-    for readtype in readtypes:
-        for peaktype in peaktypes:
-            for aligner in aligners:
-                for peakcaller in peakcallers:
-                    for deduplicator in deduplicators:
-                        for i in range(1,7):
+
+####################
+## Run Snakefiles ##
+####################
+
                             # Change into snakefile directory
-                            os.chdir(f'exp_vs_obs/snakefiles/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}')
+                            os.chdir(f'exp_vs_obs/snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
                             os.system('pwd')
                             os.system('ls')
                             # Run snakefile
-                            os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}')
+                            os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
                             # Go back to original directory
-                            os.chdir(f'../../../')
+                            os.chdir(f'../../../../')
                             
-    #!/usr/bin/env python3
-    
-    import os
-    import pandas as pd
-    
-    '''
-    Note: I ran this script in the main rocketchip directory using:
-        python3 exp_vs_obs/04_peak_counter.py
-    '''
-    
-    # Create DataFrame
-    df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Expected_Peaks", "Observed_Peaks"])
-    
-    readtypes = ["paired", "single"]
-    peaktypes = ["broad", "narrow"]
-    aligners = ["bowtie2", "bwa_mem", "STAR"]
-    peakcallers = ["macs3", "genrich", "pepr", "cisgenome"]
-    deduplicators = ["no_deduplication", "samtools", "sambamba", "picard"]
-    
-    for readtype in readtypes:
-        for peaktype in peaktypes:
-            for aligner in aligners:
-                for peakcaller in peakcallers:
-                    for deduplicator in deduplicators:
-                        for i in range(1,7):
+#################
+## Count Peaks ##
+#################
+
                             '''
                             # Change into snakefile directory
                             os.chdir(f'exp_vs_obs/snakefiles/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}')
@@ -221,11 +167,12 @@ for control in controltypes:
                             os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}')
                             # Go back to original directory
                             os.chdir(f'../../../')
-                            '''
+
                             genome_path = 
                             read_1_for_path =
                             read_1_rev_path = 
                             read_2_for_path =
                             read_2_rev_path = 
                             obs_peak_num = 
-                            df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, 50, obs_peak_num]
+                            df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, 50, obs_peak_num]
+                            '''
