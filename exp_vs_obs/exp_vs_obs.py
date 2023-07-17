@@ -61,34 +61,50 @@ for control in controltypes:
                 for peakcaller in peakcallers:
                     for deduplicator in deduplicators:
                         for i in range(1,7):
-
-                        
-                        
-                        
-                        
-                        
-                        
-                            proj_file_info = textwrap.dedent(f"""
-                            Author: Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang
-                            Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
-                            Genome:
-                            Name: genome
-                            Location: '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
-                            Reads:
-                            Samples:
-                                grp1: 
-                                - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
-                                - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
-                            Controls:
-                                ctl1: 
-                                - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/input'
-                            Readtype: {readtype}
-                            Peaktype: {peaktype}
-                            Aligner: {aligner}
-                            Deduplicator: {deduplicator}
-                            Peakcaller: {peakcaller}
-                            Threads: 1
-                            """)
+                            if "control" == "with_control":
+                                proj_file_info = textwrap.dedent(f"""
+                                Author: Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang
+                                Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
+                                Genome:
+                                Name: genome
+                                Location: '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
+                                Reads:
+                                Samples:
+                                    grp1: 
+                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
+                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
+                                Controls:
+                                    ctl1: 
+                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/input'
+                                Readtype: {readtype}
+                                Peaktype: {peaktype}
+                                Aligner: {aligner}
+                                Deduplicator: {deduplicator}
+                                Peakcaller: {peakcaller}
+                                Threads: 1
+                                """)
+                            if "control" == "no_control":
+                                proj_file_info = textwrap.dedent(f"""
+                                Author: Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang
+                                Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
+                                Genome:
+                                Name: genome
+                                Location: '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
+                                Reads:
+                                Samples:
+                                    grp1: 
+                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
+                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
+                                Controls:
+                                    ctl1: 
+                                    - '/share/korflab/home/viki/rocketchip/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/input'
+                                Readtype: {readtype}
+                                Peaktype: {peaktype}
+                                Aligner: {aligner}
+                                Deduplicator: {deduplicator}
+                                Peakcaller: {peakcaller}
+                                Threads: 1
+                                """)
                             print(f'Generating project_files/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}.yaml...')
                             os.system(f'touch project_files/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}.yaml')
                             with open(f'project_files/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}.yaml', 'w') as f:
