@@ -1,7 +1,9 @@
+rules # Symbolic link 
+tools # Symbolic link
+rocketchip # Symbolic link
 exp_vs_obs/seq_data/paired_narrow/
 exp_vs_obs/seq_data/paired_broad/
 exp_vs_obs/seq_data/single_narrow/
 exp_vs_obs/seq_data/single_broad/
 exp_vs_obs/project_files/
 exp_vs_obs/snakefiles/
-rocketchip
