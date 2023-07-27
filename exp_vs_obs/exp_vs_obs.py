@@ -89,6 +89,7 @@ for control in controltypes:
                                 Threads: 1
                                 """)
                             elif control == "no_control":
+                                if peakcaller == "cisgenome" or peakcaller == "pepr": continue
                                 proj_file_info = textwrap.dedent(f"""
                                 Author: Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang
                                 Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
