@@ -100,11 +100,10 @@ for control in controltypes:
                                         grp1: 
                                             - '/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
                                             - '/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
-                                    Controls: 
-                                        ctl1: None
+                                    Controls:
                                 Readtype: {readtype}
                                 Peaktype: {peaktype}
-                                Aligner: {aligner}
+                                Aligner: {aligner}A
                                 Deduplicator: {deduplicator}
                                 Peakcaller: {peakcaller}
                                 Threads: 1
