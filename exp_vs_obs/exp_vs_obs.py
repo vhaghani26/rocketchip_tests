@@ -9,9 +9,10 @@ Note: I ran this script in the exp_vs_obs/ directory:
 ## Import Modules ##
 ####################
 
-import textwrap
-import os
 import pandas as pd
+import os
+import textwrap
+import subprocess 
 import sys # only for sys exit
 
 #############################################
@@ -27,7 +28,7 @@ deduplicators = ["samtools", "no_deduplication", "sambamba", "picard"]
 num_tests = 6
 
 # Create DataFrame for peak counting 
-#df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Expected_Peaks", "Observed_Peaks"])
+#df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Expected_Peaks", "Observed_Peaks", "Expected_Start", "Observed_Start", "Expected_End", "Observed_End"])
 
 ################################
 ## Set up Directory Structure ##
@@ -139,40 +140,69 @@ for control in controltypes:
 #                                # Write the file out again
 #                                with open(file_to_open, 'w') as file:
 #                                    file.write(filedata)
-                       
-####################
-## Run Snakefiles ##
-####################
-                            if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
-                                continue
-                            else:
-                                # Change into snakefile directory
-                                os.chdir(f'snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
-                                os.system('pwd')
-                                # Run snakefile
-                                os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
-                                # Go back to original directory
-                                os.chdir(f'../../../')
+#                       
+#####################
+### Run Snakefiles ##
+#####################
+#                            if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
+#                                continue
+#                            else:
+#                                # Change into snakefile directory
+#                                os.chdir(f'snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
+#                                os.system('pwd')
+#                                # Run snakefile
+#                                os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
+#                                # Go back to original directory
+#                                os.chdir(f'../../../')
                             
 #################
 ## Count Peaks ##
 #################
 
-                            '''
-                            # Change into snakefile directory
-                            os.chdir(f'exp_vs_obs/snakefiles/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}')
-                            os.system('pwd')
-                            os.system('ls')
-                            # Run snakefile
-                            os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}')
-                            # Go back to original directory
-                            os.chdir(f'../../../')
-
-                            genome_path = 
-                            read_1_for_path =
-                            read_1_rev_path = 
-                            read_2_for_path =
-                            read_2_rev_path = 
-                            obs_peak_num = 
-                            df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, 50, obs_peak_num]
-                            '''
+                            if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
+                                continue
+                            else:
+                                # Change into snakefile directory
+                                os.chdir(f'snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
+                                print(f'Counting peaks for exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}...')
+                                
+                                # Assign global data frame variables 
+                                genome_path = f'/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
+                                
+                                if readtype == "paired":
+                                    read_1_for_path = f'/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a_1.fastq.gz'
+                                    read_1_rev_path = f'/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a_2.fastq.gz'
+                                    read_2_for_path = f'/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b_1.fastq.gz'
+                                    read_2_rev_path = f'/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b_2.fastq.gz'
+                                elif readtype == "single":
+                                    read_1_for_path = f'/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a.fastq.gz'
+                                    read_1_rev_path = "NA"
+                                    read_2_for_path = f'/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b.fastq.gz'
+                                    read_2_rev_path = "NA"
+                                
+                                # Count peaks and determine peak locations
+                                
+                                # Still need to add peak locations
+                                
+                                if peakcaller == "macs3":
+                                    os.chdir('06_macs3_peaks')
+                                    if control == "with_control":
+                                        result = subprocess.run('less grp1_ctl1_peaks.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                    elif control == "no_control":
+                                        result = subprocess.run('less grp1_peaks.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                    obs_peak_num = int(result.stdout.strip())
+                                    os.chdir('..')
+#                                elif peakcaller == "cisgenome":
+#                                    obs_peak_num = 
+#                                elif peakcaller == "genrich":
+#                                    obs_peak_num = 
+#                                elif peakcaler == "pepr":
+#                                    obs_peak_num = 
+                                
+                                # Go back to original directory
+                                os.chdir(f'../../../')
+                                
+                                sys.exit()
+                                
+                                # Add test to dataframe 
+                                #df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, 50, obs_peak_num, exp_start, obs_start, exp_end, obs_end]
