@@ -28,7 +28,7 @@ deduplicators = ["samtools", "no_deduplication", "sambamba", "picard"]
 num_tests = 6
 
 # Create DataFrame for peak counting 
-#df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Expected_Peaks", "Observed_Peaks", "Expected_Start", "Observed_Start", "Expected_End", "Observed_End"])
+df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Expected_Peaks", "Observed_Peaks"])
 
 ################################
 ## Set up Directory Structure ##
@@ -181,9 +181,6 @@ for control in controltypes:
                                     read_2_rev_path = "NA"
                                 
                                 # Count peaks and determine peak locations
-                                
-                                # Still need to add peak locations
-                                
                                 if peakcaller == "macs3":
                                     os.chdir('06_macs3_peaks')
                                     if control == "with_control":
@@ -192,17 +189,36 @@ for control in controltypes:
                                         result = subprocess.run('less grp1_peaks.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
                                     obs_peak_num = int(result.stdout.strip())
                                     os.chdir('..')
-#                                elif peakcaller == "cisgenome":
-#                                    obs_peak_num = 
-#                                elif peakcaller == "genrich":
-#                                    obs_peak_num = 
-#                                elif peakcaler == "pepr":
-#                                    obs_peak_num = 
+                                elif peakcaller == "cisgenome":
+                                    os.chdir('06_cisgenome_peaks')
+                                    result = subprocess.run('less grp1_ctl1_peak.cod | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                    obs_peak_num = int(result.stdout.strip())
+                                    obs_peak_num = obs_peak_num - 1
+                                    os.chdir('..')
+                                elif peakcaller == "genrich":
+                                    os.chdir('06_genrich_peaks')
+                                    if control == "with_control":
+                                        result = subprocess.run('less grp1_ctl1_peak.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                        obs_peak_num = int(result.stdout.strip())
+                                    elif control == "no_control":
+                                        result = subprocess.run('less grp1_peak.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                        obs_peak_num = int(result.stdout.strip())
+                                    os.chdir('..')
+                                elif peakcaller == "pepr":
+                                    os.chdir('06_pepr_peaks')
+                                    if os.path.isfile('grp1_ctl1__PePr_peaks.bed'):
+                                        result = subprocess.run('less grp1_ctl1__PePr_peaks.bed | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                        obs_peak_num = int(result.stdout.strip())
+                                    else:
+                                        obs_peak_num = 0
+                                    os.chdir('..')
+                                print(f'Observed peaks: {obs_peak_num}')
                                 
                                 # Go back to original directory
                                 os.chdir(f'../../../')
-                                
-                                sys.exit()
-                                
+
                                 # Add test to dataframe 
-                                #df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, 50, obs_peak_num, exp_start, obs_start, exp_end, obs_end]
+                                df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, 50, obs_peak_num]
+                                
+# Save to CSV
+df.to_csv("expected_vs_observed_peaks_master.csv", index=False)
