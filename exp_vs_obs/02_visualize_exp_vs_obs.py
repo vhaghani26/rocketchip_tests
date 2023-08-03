@@ -20,8 +20,8 @@ df = pd.read_csv('expected_vs_observed_peaks_master.csv')
 ## Overall Histogram ##
 #######################
 
-# Plot histogram
-plt.hist(df['Observed_Peaks'], bins=11, range=(0, 100), color='skyblue', edgecolor='black')
+# Plot histogram 
+plt.hist(df['Observed_Peaks'], bins=10, range=(0, 100), color='skyblue', edgecolor='black')
 
 # Set x-axis tick positions and labels
 plt.xticks(range(0, 101, 10)) 
