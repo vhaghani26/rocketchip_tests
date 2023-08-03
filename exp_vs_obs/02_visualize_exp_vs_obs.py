@@ -61,6 +61,14 @@ pivot_df.columns = [f"Test_Data_{col}" for col in pivot_df.columns]
 # Merge 'proportions_per_condition' with the transposed dataframe
 merged_df = pd.merge(proportions_per_condition, pivot_df, on=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"])
 
+# Delineate column order
+desired_order = ["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"] + \
+                [f"Test_Data_{i}" for i in range(1, 7)] + \
+                ["Min_Observed_Peaks", "Max_Observed_Peaks", "Std_Observed_Peaks", "Mean_Observed_Peaks", "Percent_Accuracy"]
+
+# Reorder columns 
+merged_df = merged_df.reindex(columns=desired_order)
+
 # Save to CSV
 merged_df.to_csv("02_tables_and_figures/02_expected_vs_observed_results.csv", index=False)
 
