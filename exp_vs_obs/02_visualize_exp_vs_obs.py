@@ -15,7 +15,7 @@ import scipy.stats as stats
 import seaborn as sns
 
 # Read in data
-df = pd.read_csv('expected_vs_observed_peaks_master.csv')
+df = pd.read_csv('01_expected_vs_observed_peaks.csv')
 
 #######################
 ## Overall Histogram ##
@@ -33,7 +33,7 @@ plt.title('Total Distribution of Observed Peaks')
 plt.show()
 
 # Save figure
-plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
+plt.savefig('02_tables_and_figures/total_distribution_of_observed_peaks.pdf')
 '''
 
 ##########################
@@ -59,7 +59,7 @@ def calculate_p_value(row):
 proportions_per_condition["p_value"] = proportions_per_condition.apply(calculate_p_value, axis=1)
 
 # Save to CSV
-proportions_per_condition.to_csv("tables_and_figures/proportions_per_condition.csv", index=False)
+proportions_per_condition.to_csv("02_tables_and_figures/proportions_per_condition.csv", index=False)
 
 ##############
 ## Heatmaps ##
@@ -98,5 +98,5 @@ for (readtype, peaktype, peakcaller), data in heatmap_df.groupby(["Endedness", "
     plt.show()
     
     # Save figure
-    plt.savefig(f'tables_and_figures/heatmap_{readtype}_{peaktype}_{peakcaller}.pdf')
+    plt.savefig(f'02_tables_and_figures/heatmap_{readtype}_{peaktype}_{peakcaller}.pdf')
 '''

@@ -220,4 +220,4 @@ for control in controltypes:
                                 df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, 50, obs_peak_num]
                                 
 # Save to CSV
-df.to_csv("expected_vs_observed_peaks_master.csv", index=False)
+df.to_csv("01_expected_vs_observed_peaks.csv", index=False)
