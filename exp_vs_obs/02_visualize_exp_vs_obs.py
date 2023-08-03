@@ -46,7 +46,7 @@ proportions_per_condition = df.groupby(["Endedness", "Peak_Type", "Aligner", "Pe
 ).reset_index()
 
 # Save to CSV
-df.to_csv("tables_and_figures/proportions_per_condition.csv", index=False)
+proportions_per_condition.to_csv("tables_and_figures/proportions_per_condition.csv", index=False)
 
 ##############
 ## Heatmaps ##
