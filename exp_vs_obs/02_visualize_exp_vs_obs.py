@@ -55,13 +55,16 @@ pivot_df = df.pivot_table(index=["Endedness", "Peak_Type", "Aligner", "Peak_Call
                           values="Observed_Peaks",
                           aggfunc='first')
 
-# Rename the columns to add the prefix "Test_Data_"
+# Rename columns 
 pivot_df.columns = [f"Test_Data_{col}" for col in pivot_df.columns]
 
 # Merge 'proportions_per_condition' with the transposed dataframe
 merged_df = pd.merge(proportions_per_condition, pivot_df, on=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"])
 
-# Reorganize
+# Remove test data columns from the merged dataframe
+merged_df = merged_df.drop(columns=[col for col in merged_df.columns if col.startswith("Test_Data")])
+
+# Reorder columns to move "Test_Data" columns after "Control"
 desired_order = ["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"] + list(pivot_df.columns)
 merged_df = merged_df.reindex(columns=desired_order)
 
