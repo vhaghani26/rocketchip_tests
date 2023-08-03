@@ -22,9 +22,13 @@ df = pd.read_csv('expected_vs_observed_peaks_master.csv')
 
 # Plot histogram
 plt.hist(df['Observed_Peaks'], bins=10, color='skyblue', edgecolor='black')
+
+# Set x-axis tick positions and labels
+plt.xticks(range(0, 101, 10)) 
 plt.xlabel('Number of Observed Peaks')
 plt.ylabel('Frequency')
 plt.title('Total Distribution of Observed Peaks')
+plt.show()
 
 # Save figure
 plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
