@@ -2,7 +2,7 @@
 
 '''
 Note: I ran this script in the exp_vs_obs/ directory:
-    python3 exp_vs_obs.py
+    python3 01_exp_vs_obs.py
 '''
 
 ####################
@@ -13,7 +13,6 @@ import pandas as pd
 import os
 import textwrap
 import subprocess 
-import sys # only for sys exit
 
 #############################################
 ## Set Variables for Combinatorial Testing ##
