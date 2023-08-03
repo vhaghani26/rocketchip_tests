@@ -47,19 +47,22 @@ proportions_per_condition = df.groupby(["Endedness", "Peak_Type", "Aligner", "Pe
     Std_Observed_Peaks = ("Observed_Peaks", "std"),
     Mean_Observed_Peaks = ("Observed_Peaks", "mean"),
     Percent_Accuracy = ("Observed_Peaks", lambda x: (x == 50).sum() / len(x) * 100),
-    Expected_Peaks = ("Expected_Peaks", "mean")
 ).reset_index()
 
-# Function to calculate p-value for each group
-def calculate_p_value(row):
-    _, p_value = stats.ttest_ind(row["Mean_Observed_Peaks"], row["Expected_Peaks"])
-    return p_value
+# Transpose "Test_Dataset" values into columns for new dataframe
+pivot_df = df.pivot_table(index=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"],
+                          columns="Test_Dataset",
+                          values="Observed_Peaks",
+                          aggfunc='first')
 
-# Apply the function to calculate p-value for each group and add it as a new column
-proportions_per_condition["p_value"] = proportions_per_condition.apply(calculate_p_value, axis=1)
+# Rename the columns to add the prefix "Test_Data_"
+pivot_df.columns = [f"Test_Data_{col}" for col in pivot_df.columns]
+
+# Merge 'proportions_per_condition' with the transposed DataFrame
+merged_df = pd.merge(proportions_per_condition, pivot_df, on=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"])
 
 # Save to CSV
-proportions_per_condition.to_csv("02_tables_and_figures/proportions_per_condition.csv", index=False)
+merged_df.to_csv("02_tables_and_figures/02_expected_vs_observed_results_with_transposed_test_data.csv", index=False)
 
 ##############
 ## Heatmaps ##
