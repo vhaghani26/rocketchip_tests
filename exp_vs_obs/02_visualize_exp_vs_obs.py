@@ -20,6 +20,7 @@ df = pd.read_csv('expected_vs_observed_peaks_master.csv')
 ## Overall Histogram ##
 #######################
 
+'''
 # Plot histogram 
 plt.hist(df['Observed_Peaks'], bins=10, range=(0, 100), color='skyblue', edgecolor='black')
 
@@ -32,6 +33,7 @@ plt.show()
 
 # Save figure
 plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
+'''
 
 ##########################
 ## Table of Proportions ##
