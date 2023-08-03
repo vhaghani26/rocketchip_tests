@@ -37,23 +37,22 @@ plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
 ## Table of Proportions ##
 ##########################
 
-'''
 # Condense tests for each condition and calculate basic stats 
-proportions_per_condition = df.groupby(["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control"]).agg(
-    min_observed_peaks = ("Observed_Peaks", "min"),
-    max_observed_peaks = ("Observed_Peaks", "max"),
-    std_observed_peaks = ("Observed_Peaks", "std"),
-    mean_observed_peaks = ("Observed_Peaks", "mean")
+proportions_per_condition = df.groupby(["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"]).agg(
+    Min_Observed_Peaks=("Observed_Peaks", "min"),
+    Max_Observed_Peaks=("Observed_Peaks", "max"),
+    Std_Observed_Peaks=("Observed_Peaks", "std"),
+    Mean_Observed_Peaks=("Observed_Peaks", "mean")
 ).reset_index()
 
-# Print the resulting DataFrame
-print(proportions_per_condition)
-
+# Save to CSV
+df.to_csv("tables_and_figures/proportions_per_condition.csv", index=False)
 
 ##############
 ## Heatmaps ##
 ##############
 
+'''
 # Filter rows so peak caller is unique for peak type and endedness groups
 heatmap_df = df.groupby(["Endedness", "Peak_Type"]).filter(lambda x: x["Peak_Caller"].nunique() == 1)
 
