@@ -11,6 +11,7 @@ Note: I ran this script in the exp_vs_obs/ directory:
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import scipy.stats as stats
 import seaborn as sns
 
 # Read in data
@@ -39,13 +40,23 @@ plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
 ## Table of Proportions ##
 ##########################
 
-# Condense tests for each condition and calculate basic stats 
+# Condense tests for each condition and calculate basic stats
 proportions_per_condition = df.groupby(["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"]).agg(
-    Min_Observed_Peaks=("Observed_Peaks", "min"),
-    Max_Observed_Peaks=("Observed_Peaks", "max"),
-    Std_Observed_Peaks=("Observed_Peaks", "std"),
-    Mean_Observed_Peaks=("Observed_Peaks", "mean")
+    Min_Observed_Peaks = ("Observed_Peaks", "min"),
+    Max_Observed_Peaks = ("Observed_Peaks", "max"),
+    Std_Observed_Peaks = ("Observed_Peaks", "std"),
+    Mean_Observed_Peaks = ("Observed_Peaks", "mean"),
+    Percent_Accuracy = ("Observed_Peaks", lambda x: (x == 50).sum() / len(x) * 100),
+    Expected_Peaks = ("Expected_Peaks", "mean")
 ).reset_index()
+
+# Function to calculate p-value for each group
+def calculate_p_value(row):
+    _, p_value = stats.ttest_ind(row["Mean_Observed_Peaks"], row["Expected_Peaks"])
+    return p_value
+
+# Apply the function to calculate p-value for each group and add it as a new column
+proportions_per_condition["p_value"] = proportions_per_condition.apply(calculate_p_value, axis=1)
 
 # Save to CSV
 proportions_per_condition.to_csv("tables_and_figures/proportions_per_condition.csv", index=False)
