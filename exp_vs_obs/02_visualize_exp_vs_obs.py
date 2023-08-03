@@ -58,11 +58,11 @@ pivot_df = df.pivot_table(index=["Endedness", "Peak_Type", "Aligner", "Peak_Call
 # Rename the columns to add the prefix "Test_Data_"
 pivot_df.columns = [f"Test_Data_{col}" for col in pivot_df.columns]
 
-# Merge 'proportions_per_condition' with the transposed DataFrame
+# Merge 'proportions_per_condition' with the transposed dataframe
 merged_df = pd.merge(proportions_per_condition, pivot_df, on=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"])
 
 # Save to CSV
-merged_df.to_csv("02_tables_and_figures/02_expected_vs_observed_results_with_transposed_test_data.csv", index=False)
+merged_df.to_csv("02_tables_and_figures/02_expected_vs_observed_results.csv", index=False)
 
 ##############
 ## Heatmaps ##
