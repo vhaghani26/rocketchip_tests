@@ -69,7 +69,7 @@ for control in controltypes:
                 for peakcaller in peakcallers:
                     for deduplicator in deduplicators:
                         for i in range(1, num_tests + 1):
-'''
+                            '''
                             if control == "with_control":
                                 proj_file_info = textwrap.dedent(f"""
                                 Author: Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang
@@ -157,7 +157,7 @@ for control in controltypes:
                                 os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
                                 # Go back to original directory
                                 os.chdir(f'../../../')
-'''
+                            '''
                             
 #################
 ## Count Peaks ##
@@ -184,7 +184,7 @@ for control in controltypes:
                                     read_2_for_path = f'/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b.fastq.gz'
                                     read_2_rev_path = "NA"
                                 
-                                # Delineate sequence metadata
+                                # Assign sequence metadata
                                 reads_per_peak = 2**i
                                 expected_peaks = 1000
                                 reads_std_dev = 0.1
@@ -200,16 +200,22 @@ for control in controltypes:
                                     
                                 if readtype == "paired":
                                     paired = 10
-                                elif readtype == "single"
+                                elif readtype == "single":
                                     paired = "NA"
                                 
                                 # Count peaks and determine peak locations
                                 if peakcaller == "macs3":
                                     os.chdir('06_macs3_peaks')
                                     if control == "with_control":
-                                        result = subprocess.run('less grp1_ctl1_peaks.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                        if peaktype == "narrow":
+                                            result = subprocess.run('less grp1_ctl1_peaks.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                        elif peaktype == "broad":
+                                            result = subprocess.run('less grp1_ctl1_peaks.broadPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
                                     elif control == "no_control":
-                                        result = subprocess.run('less grp1_peaks.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                        if peaktype == "narrow":
+                                            result = subprocess.run('less grp1_peaks.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                        elif peaktype == "broad":
+                                            result = subprocess.run('less grp1_peaks.broadPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
                                     obs_peak_num = int(result.stdout.strip())
                                     os.chdir('..')
                                 elif peakcaller == "cisgenome":
@@ -244,8 +250,7 @@ for control in controltypes:
                                 df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, reads_per_peak, padding, reads_std_dev, width, length, paired, flank, expected_peaks, obs_peak_num]
                                 
 # Save to CSV
-print(df)
-#df.to_csv("01_expected_vs_observed_peaks.csv", index=False)
+df.to_csv("tables_and_figures/expected_vs_observed_peaks_master.csv", index=False)
 
 '''
 ###############
