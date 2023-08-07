@@ -2,7 +2,7 @@
 
 '''
 Note: I ran this script in the exp_vs_obs/ directory:
-    python3 01_exp_vs_obs.py
+    python3 exp_vs_obs.py
 '''
 
 ####################
@@ -13,6 +13,9 @@ import pandas as pd
 import os
 import textwrap
 import subprocess 
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+import seaborn as sns
 
 #############################################
 ## Set Variables for Combinatorial Testing ##
@@ -27,7 +30,7 @@ deduplicators = ["samtools", "no_deduplication", "sambamba", "picard"]
 num_tests = 6
 
 # Create DataFrame for peak counting 
-df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Expected_Peaks", "Observed_Peaks"])
+df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Reads_per_Peak", "Padding", "Reads_STD_Dev", "Width", "Read_Length", "Paired", "Flank", "Expected_Peaks", "Observed_Peaks"])
 
 ################################
 ## Set up Directory Structure ##
@@ -66,6 +69,7 @@ for control in controltypes:
                 for peakcaller in peakcallers:
                     for deduplicator in deduplicators:
                         for i in range(1, num_tests + 1):
+'''
                             if control == "with_control":
                                 proj_file_info = textwrap.dedent(f"""
                                 Author: Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang
@@ -153,6 +157,7 @@ for control in controltypes:
                                 os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
                                 # Go back to original directory
                                 os.chdir(f'../../../')
+'''
                             
 #################
 ## Count Peaks ##
@@ -178,6 +183,25 @@ for control in controltypes:
                                     read_1_rev_path = "NA"
                                     read_2_for_path = f'/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b.fastq.gz'
                                     read_2_rev_path = "NA"
+                                
+                                # Delineate sequence metadata
+                                reads_per_peak = 2**i
+                                expected_peaks = 1000
+                                reads_std_dev = 0.1
+                                length = 80
+                                flank = 2000 
+                                
+                                if peaktype == "narrow":
+                                    padding = 2500
+                                    width = 400
+                                elif peaktype == "broad":
+                                    padding = 5000
+                                    width = 1500
+                                    
+                                if readtype == "paired":
+                                    paired = 10
+                                elif readtype == "single"
+                                    paired = "NA"
                                 
                                 # Count peaks and determine peak locations
                                 if peakcaller == "macs3":
@@ -217,7 +241,72 @@ for control in controltypes:
                                 os.chdir(f'../../../')
 
                                 # Add test to dataframe 
-                                df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, 50, obs_peak_num]
+                                df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, reads_per_peak, padding, reads_std_dev, width, length, paired, flank, expected_peaks, obs_peak_num]
                                 
 # Save to CSV
-df.to_csv("01_expected_vs_observed_peaks.csv", index=False)
+print(df)
+#df.to_csv("01_expected_vs_observed_peaks.csv", index=False)
+
+'''
+###############
+## Visualize ##
+###############
+
+# Read in data
+df = pd.read_csv('01_expected_vs_observed_peaks.csv')
+
+#######################
+## Overall Histogram ##
+#######################
+
+# Plot histogram 
+plt.hist(df['Observed_Peaks'], bins=10, range=(0, 100), color='skyblue', edgecolor='black')
+
+# Set x-axis tick positions and labels
+plt.xticks(range(0, 101, 10)) 
+plt.xlabel('Number of Observed Peaks')
+plt.ylabel('Frequency')
+plt.title('Total Distribution of Observed Peaks')
+plt.show()
+
+# Save figure
+plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
+
+##############
+## Heatmaps ##
+##############
+
+# Filter rows so peak caller is unique for peak type and endedness groups
+heatmap_df = df.groupby(["Endedness", "Peak_Type"]).filter(lambda x: x["Peak_Caller"].nunique() == 1)
+
+# Generate a heatmap for each unique combination of peak type, endedness, and peak caller
+for (readtype, peaktype, peakcaller), data in heatmap_df.groupby(["Endedness", "Peak_Type", "Peak_Caller"]):
+    
+    # Plot size
+    plt.figure(figsize=(10, 6))
+    
+    # Create a matrix for the heatmap
+    pivot_df = data.pivot(index = "Deduplicator", columns = "Aligner", values = "Observed_Peaks")
+    sns.heatmap(pivot_df, cmap = "coolwarm", annot = True, fmt = ".2f", cbar_kws = {'label': 'Observed Peaks'})
+    
+    # Format naming
+    if peakcaller == "macs3": 
+        peakcaller_name = "MACS3"
+    elif peakcaller == "genrich":
+        peakcaller_name = "Genrich"
+    elif peakcaller == "cisgenome":
+        peakcaller_name = "CisGenome"
+    elif peakcaller == "pepr":
+        peakcaller_name = "PePr"
+    
+    # Configure titles and axis labels
+    plt.title(f'Number of Peaks for {readtype.title()}-End Data with {peaktype.title()} Peaks using {peakcaller_name}')
+    plt.xlabel("Aligner")
+    plt.ylabel("Deduplicator")
+    
+    # Show figure
+    plt.show()
+    
+    # Save figure
+    plt.savefig(f'02_tables_and_figures/heatmap_{readtype}_{peaktype}_{peakcaller}.pdf')
+'''
