@@ -17,8 +17,9 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 import seaborn as sns
 
-# Working directory
+# User-specific variables
 working_dir = '/share/korflab/home/viki/rocketchip_tests/'
+authors = 'Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang'
 
 #############################################
 ## Set Variables for Combinatorial Testing ##
@@ -74,7 +75,7 @@ for control in controltypes:
                         for i in range(1, num_tests + 1):
                             if control == "with_control":
                                 proj_file_info = textwrap.dedent(f"""
-                                Author: Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang
+                                Author: {authors}
                                 Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
                                 Genome:
                                     Name: genome
@@ -97,7 +98,7 @@ for control in controltypes:
                             elif control == "no_control":
                                 if peakcaller == "cisgenome" or peakcaller == "pepr": continue
                                 proj_file_info = textwrap.dedent(f"""
-                                Author: Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang
+                                Author: {authors}
                                 Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
                                 Genome:
                                     Name: genome
