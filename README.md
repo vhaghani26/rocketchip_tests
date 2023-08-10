@@ -36,7 +36,7 @@ for dir in single_narrow_*; do
 done
 ```
 
-Navigate back to `exp_vs_obs/` and open `exp_vs_obs.py` in a text editor of your choice. In the "Import Modules" section, go to the "User-specific variables" section and change the working directory and authors variable to your working directory and name. Save and close the file.
+Navigate back to `exp_vs_obs/` and open `exp_vs_obs.py` in a text editor of your choice. In the "Import Modules" section, go to the "User-specific variables" section and change the working directory and authors variable to your working directory (do not put a `/` at the end of the directory name) and name. Save and close the file.
 
 Now, run the script. This will trigger the creation of all project files, creation of all snakefiles, execute the snakefiles to conduct the analysis, carry out statistics, and visualize the results. Effectively, this will run the test beginning to end. Please not this will take a long time due to the amount of tests:
 

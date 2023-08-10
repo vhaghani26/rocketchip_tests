@@ -18,7 +18,7 @@ import scipy.stats as stats
 import seaborn as sns
 
 # User-specific variables
-working_dir = '/share/korflab/home/viki/rocketchip_tests/'
+working_dir = '/share/korflab/home/viki/rocketchip_tests'
 authors = 'Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang'
 
 #############################################
