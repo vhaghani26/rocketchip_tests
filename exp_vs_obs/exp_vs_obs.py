@@ -263,6 +263,7 @@ df.to_csv("tables_and_figures/expected_vs_observed_peaks_master.csv", index=Fals
 # Read in data
 df = pd.read_csv('tables_and_figures/expected_vs_observed_peaks_master.csv')
 
+'''
 #######################
 ## Overall Histogram ##
 #######################
@@ -283,6 +284,19 @@ plt.show()
 
 # Save figure
 plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
+'''
+
+###############################
+## Visualize Data Parameters ##
+###############################
+
+# Create a scatter plot
+plt.scatter(df['Reads_per_Peak'], df['Observed_Peaks'], color='blue', marker='o')
+plt.xlabel('Reads per Peak')
+plt.ylabel('Observed Peaks')
+plt.title('Read Coverage vs. Observed Peaks')
+plt.grid(True)
+plt.savefig('tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
 
 '''
 ##############
