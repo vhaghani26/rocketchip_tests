@@ -14,6 +14,7 @@ import os
 import textwrap
 import subprocess 
 import matplotlib.pyplot as plt
+import numpy as np
 import scipy.stats as stats
 import seaborn as sns
 
@@ -290,12 +291,21 @@ plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
 ## Visualize Data Parameters ##
 ###############################
 
+# Perform linear regression
+fit = np.polyfit(df['Reads_per_Peak'], df['Observed_Peaks'], 1)
+fit_fn = np.poly1d(fit)
+
 # Create a scatter plot
 plt.scatter(df['Reads_per_Peak'], df['Observed_Peaks'], color='blue', marker='o')
+
+# Add best-fit line
+plt.plot(df['Reads_per_Peak'], fit_fn(df['Observed_Peaks']), color='red')  
+
+# Add labels
 plt.xlabel('Reads per Peak')
 plt.ylabel('Observed Peaks')
 plt.title('Read Coverage vs. Observed Peaks')
-plt.grid(True)
+plt.grid(False)
 plt.savefig('tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
 
 '''
