@@ -62,6 +62,7 @@ if not os.path.exists('snakefiles/no_control/'):
     print('Directory snakefiles/no_control/ not found. Creating snakefiles/no_control/')
     os.system(f'mkdir snakefiles/no_control')   
 
+'''
 ########################
 ## Make Project Files ##
 ########################
@@ -253,24 +254,24 @@ for control in controltypes:
                                 
 # Save to CSV
 df.to_csv("tables_and_figures/expected_vs_observed_peaks_master.csv", index=False)
-
 '''
+
 ###############
 ## Visualize ##
 ###############
 
 # Read in data
-df = pd.read_csv('01_expected_vs_observed_peaks.csv')
+df = pd.read_csv('tables_and_figures/expected_vs_observed_peaks_master.csv')
 
 #######################
 ## Overall Histogram ##
 #######################
 
 # Plot histogram 
-plt.hist(df['Observed_Peaks'], bins=10, range=(0, 100), color='skyblue', edgecolor='black')
+plt.hist(df['Observed_Peaks'], bins=100, range=(0, 1000), color='skyblue', edgecolor='black')
 
 # Set x-axis tick positions and labels
-plt.xticks(range(0, 101, 10)) 
+#plt.xticks(range(0, 101, 10)) 
 plt.xlabel('Number of Observed Peaks')
 plt.ylabel('Frequency')
 plt.title('Total Distribution of Observed Peaks')
@@ -279,6 +280,7 @@ plt.show()
 # Save figure
 plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
 
+'''
 ##############
 ## Heatmaps ##
 ##############
