@@ -267,8 +267,12 @@ df = pd.read_csv('tables_and_figures/expected_vs_observed_peaks_master.csv')
 ## Overall Histogram ##
 #######################
 
+# Find the maximum value of observed peaks in order to adjust visualization
+max_observed_peaks = df['Observed_Peaks'].max()
+print(f'{max_observed_peaks} was the highest observed peak number.')
+
 # Plot histogram 
-plt.hist(df['Observed_Peaks'], bins=100, range=(0, 1000), color='skyblue', edgecolor='black')
+plt.hist(df['Observed_Peaks'], bins=200, range=(0, 2000), color='skyblue', edgecolor='black')
 
 # Set x-axis tick positions and labels
 #plt.xticks(range(0, 101, 10)) 
