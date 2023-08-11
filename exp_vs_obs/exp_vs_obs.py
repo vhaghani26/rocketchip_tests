@@ -296,10 +296,10 @@ fit = np.polyfit(df['Reads_per_Peak'], df['Observed_Peaks'], 1)
 fit_fn = np.poly1d(fit)
 
 # Create a scatter plot
-plt.scatter(df['Reads_per_Peak'], df['Observed_Peaks'], color='blue', marker='o')
+plt.scatter(df['Reads_per_Peak'], df['Observed_Peaks'], color = 'blue', marker = 'o')
 
 # Add best-fit line
-plt.plot(df['Reads_per_Peak'], fit_fn(df['Observed_Peaks']), color='red')  
+plt.plot(df['Reads_per_Peak'], fit_fn(df['Reads_per_Peak']), color='red') 
 
 # Add labels
 plt.xlabel('Reads per Peak')
