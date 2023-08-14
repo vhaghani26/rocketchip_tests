@@ -285,7 +285,7 @@ plt.show()
 
 # Save figure
 plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
-'''
+plt.close()
 
 ###############################
 ## Visualize Data Parameters ##
@@ -307,25 +307,26 @@ plt.ylabel('Observed Peaks')
 plt.title('Read Coverage vs. Observed Peaks')
 plt.grid(False)
 plt.savefig('tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
-
+plt.close()
 '''
+
 ##############
 ## Heatmaps ##
 ##############
 
-# Filter rows so peak caller is unique for peak type and endedness groups
-heatmap_df = df.groupby(["Endedness", "Peak_Type"]).filter(lambda x: x["Peak_Caller"].nunique() == 1)
+# Filter unique combinations of Endedness, Peak_Type, and Peak_Caller
+unique_combinations = df.groupby(["Endedness", "Peak_Type", "Deduplicator"]).filter(lambda x: x["Aligner"].nunique() == 1)
 
 # Generate a heatmap for each unique combination of peak type, endedness, and peak caller
-for (readtype, peaktype, peakcaller), data in heatmap_df.groupby(["Endedness", "Peak_Type", "Peak_Caller"]):
+for (endedness, peak_type, deduplicator), data in unique_combinations.groupby(["Endedness", "Peak_Type", "Deduplicator"]):
+    
+    # Pivot the data to create a matrix for the heatmap
+    pivot_df = data.pivot(index="Test_Dataset", columns="Aligner", values="Observed_Peaks")
     
     # Plot size
     plt.figure(figsize=(10, 6))
-    
-    # Create a matrix for the heatmap
-    pivot_df = data.pivot(index = "Deduplicator", columns = "Aligner", values = "Observed_Peaks")
-    sns.heatmap(pivot_df, cmap = "coolwarm", annot = True, fmt = ".2f", cbar_kws = {'label': 'Observed Peaks'})
-    
+    sns.heatmap(pivot_df, annot=True, fmt=".2f", cmap="coolwarm", cbar_kws={'label': 'Observed Peaks'})
+
     # Format naming
     if peakcaller == "macs3": 
         peakcaller_name = "MACS3"
@@ -340,10 +341,8 @@ for (readtype, peaktype, peakcaller), data in heatmap_df.groupby(["Endedness", "
     plt.title(f'Number of Peaks for {readtype.title()}-End Data with {peaktype.title()} Peaks using {peakcaller_name}')
     plt.xlabel("Aligner")
     plt.ylabel("Deduplicator")
-    
-    # Show figure
-    plt.show()
+    plt.tight_layout()
     
     # Save figure
-    plt.savefig(f'02_tables_and_figures/heatmap_{readtype}_{peaktype}_{peakcaller}.pdf')
-'''
+    plt.savefig(f'tables_and_figures/heatmap_{readtype}_{peaktype}_{peakcaller}.pdf')
+    plt.close()
