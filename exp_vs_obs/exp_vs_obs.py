@@ -315,8 +315,26 @@ plt.close()
 ##############
 
 # Filter unique combinations of Endedness, Peak_Type, and Peak_Caller
-unique_combinations = df.groupby(["Endedness", "Peak_Type", "Deduplicator"]).filter(lambda x: x["Aligner"].nunique() == 1)
+heatmap_combinations = df.groupby(["Endedness", "Peak_Type"])
 
+for group_name, group_data in heatmap_combinations:
+    
+    # Assign variable names
+    endedness, peak_type = group_name
+    
+    # Re-label the data
+    for index, row in group_data.iterrows():
+        deduplicator = row["Deduplicator"]
+        aligner = row["Aligner"]
+        test_dataset = row["Test_Dataset"]
+        new_label = f"{deduplicator}_{aligner}_{test_dataset}"
+        df.at[index, "New_Label"] = new_label
+       
+    print(group_data)
+    print("\n")
+    break
+
+'''
 # Generate a heatmap for each unique combination of peak type, endedness, and peak caller
 for (endedness, peak_type, deduplicator), data in unique_combinations.groupby(["Endedness", "Peak_Type", "Deduplicator"]):
     
@@ -338,11 +356,12 @@ for (endedness, peak_type, deduplicator), data in unique_combinations.groupby(["
         peakcaller_name = "PePr"
     
     # Configure titles and axis labels
-    plt.title(f'Number of Peaks for {readtype.title()}-End Data with {peaktype.title()} Peaks using {peakcaller_name}')
+    plt.title(f'Number of Peaks for {endedness.title()}-End Data with {peak_type.title()} Peaks using {peakcaller_name}')
     plt.xlabel("Aligner")
     plt.ylabel("Deduplicator")
     plt.tight_layout()
     
     # Save figure
-    plt.savefig(f'tables_and_figures/heatmap_{readtype}_{peaktype}_{peakcaller}.pdf')
+    plt.savefig(f'tables_and_figures/heatmap_{endedness}_{peak_type}_{peakcaller}.pdf')
     plt.close()
+'''
