@@ -54,7 +54,7 @@ for i in range(arg.stacks):
 	peaks.append(arg.flank + i * arg.padding)
 	for r in numpy.random.normal(0, arg.stddev, arg.rps):
 		pos = int(r*arg.length)
-		if arg.width > 0: pos = random.randint(pos-arg.width, pos+arg.width)
+		if arg.width > 0: pos = random.randint(pos-arg.width/2, pos+arg.width/2)
 		locs.append(coor + pos)
 	coor += arg.padding
 coor += arg.flank
