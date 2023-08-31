@@ -189,7 +189,7 @@ for control in controltypes:
                                     read_2_rev_path = "NA"
                                 
                                 # Assign sequence metadata
-                                reads_per_peak = 2**i
+                                reads_per_peak = 2**(i+1)
                                 expected_peaks = 1000
                                 reads_std_dev = 0.1
                                 length = 80
