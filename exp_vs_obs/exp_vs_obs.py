@@ -9,6 +9,8 @@ Note: I ran this script in the exp_vs_obs/ directory:
 ## Import Modules ##
 ####################
 
+import sys
+from collections import defaultdict
 import pandas as pd
 import os
 import textwrap
@@ -18,14 +20,15 @@ import numpy as np
 import scipy.stats as stats
 import seaborn as sns
 
+###########################
+## Set Working Variables ##
+###########################
+
 # User-specific variables
-working_dir = '/share/korflab/home/viki/rocketchip_tests'
 authors = 'Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang'
+working_dir = os.getcwd() # Do NOT end the directory name with / here
 
-#############################################
-## Set Variables for Combinatorial Testing ##
-#############################################
-
+# Combinatorial testing variables
 controltypes = ["no_control", "with_control"]  
 readtypes = ["paired", "single"]
 peaktypes = ["narrow", "broad"]
@@ -37,36 +40,262 @@ num_tests = 6
 # Create DataFrame for peak counting 
 df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Reads_per_Peak", "Padding", "Reads_STD_Dev", "Width", "Read_Length", "Paired", "Flank", "Expected_Peaks", "Observed_Peaks"])
 
-################################
-## Set up Directory Structure ##
-################################
+#########################
+## Delineate Functions ##
+#########################
 
-# Project files
-if not os.path.exists('project_files/'):
-    print('Directory project_files/ not found. Creating project_files/')
-    os.system(f'mkdir project_files')
-if not os.path.exists('project_files/with_control/'):
-    print('Directory project_files/with_control/ not found. Creating project_files/with_control/')
-    os.system(f'mkdir project_files/with_control')    
-if not os.path.exists('project_files/no_control/'):
-    print('Directory project_files/no_control/ not found. Creating project_files/no_control/')
-    os.system(f'mkdir project_files/no_control')  
+# Make project files
+def generate_project_files(authors, working_dir, controltypes, readtypes, peaktypes, aligners, peakcallers, deduplicators, num_tests):
+    # Set up directory structure for project files if needed
+    if not os.path.exists(f'{working_dir}/project_files/'):
+        print(f'Directory {working_dir}/project_files/ not found. Creating {working_dir}/project_files/')
+        os.system(f'mkdir {working_dir}/project_files')
+    if not os.path.exists(f'{working_dir}/project_files/with_control/'):
+        print(f'Directory {working_dir}/project_files/with_control/ not found. Creating {working_dir}/project_files/with_control/')
+        os.system(f'mkdir {working_dir}/project_files/with_control')    
+    if not os.path.exists(f'{working_dir}/project_files/no_control/'):
+        print(f'Directory {working_dir}/project_files/no_control/ not found. Creating {working_dir}/project_files/no_control/')
+        os.system(f'mkdir {working_dir}/project_files/no_control')  
+    
+    # Start combinatorial project file generation
+    for control in controltypes:
+        for readtype in readtypes:
+            for peaktype in peaktypes:
+                for aligner in aligners:
+                    for peakcaller in peakcallers:
+                        for deduplicator in deduplicators:
+                            for i in range(1, num_tests + 1):
+                                if control == "with_control":
+                                    proj_file_info = textwrap.dedent(f"""
+                                    Author: {authors}
+                                    Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
+                                    Genome:
+                                        Name: genome
+                                        Location: '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
+                                    Reads:
+                                        Samples:
+                                            grp1: 
+                                                - '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
+                                                - '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
+                                        Controls:
+                                            ctl1: 
+                                                - '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/input'
+                                    Readtype: {readtype}
+                                    Peaktype: {peaktype}
+                                    Aligner: {aligner}
+                                    Deduplicator: {deduplicator}
+                                    Peakcaller: {peakcaller}
+                                    Threads: 1
+                                    """)
+                                elif control == "no_control":
+                                    if peakcaller == "cisgenome" or peakcaller == "pepr": continue
+                                    proj_file_info = textwrap.dedent(f"""
+                                    Author: {authors}
+                                    Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
+                                    Genome:
+                                        Name: genome
+                                        Location: '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
+                                    Reads:
+                                        Samples:
+                                            grp1: 
+                                                - '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
+                                                - '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
+                                        Controls:
+                                    Readtype: {readtype}
+                                    Peaktype: {peaktype}
+                                    Aligner: {aligner}
+                                    Deduplicator: {deduplicator}
+                                    Peakcaller: {peakcaller}
+                                    Threads: 1
+                                    """)
+                                print(f'Generating {working_dir}/project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml...')
+                                os.system(f'touch {working_dir}/project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml')
+                                with open(f'{working_dir}/project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml', 'w') as f:
+                                    f.write(f'{proj_file_info}')
+                                os.system(f'sed -i \'1d\' {working_dir}/project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml')
 
-# Snakefiles
-if not os.path.exists('snakefiles/'):
-    print('Directory snakefiles/ not found. Creating snakefiles/')
-    os.system(f'mkdir snakefiles')
-if not os.path.exists('snakefiles/with_control/'):
-    print('Directory snakefiles/with_control/ not found. Creating snakefiles/with_control/')
-    os.system(f'mkdir snakefiles/with_control')    
-if not os.path.exists('snakefiles/no_control/'):
-    print('Directory snakefiles/no_control/ not found. Creating snakefiles/no_control/')
-    os.system(f'mkdir snakefiles/no_control')   
+# Make Snakefiles
+def generate_snakefiles(authors, working_dir, controltypes, readtypes, peaktypes, aligners, peakcallers, deduplicators, num_tests):
+    # Set up directory structure for Snakefiles if needed
+    if not os.path.exists(f'{working_dir}/snakefiles/'):
+        print(f'Directory {working_dir}/snakefiles/ not found. Creating {working_dir}/snakefiles/')
+        os.system(f'mkdir {working_dir}/snakefiles')
+    if not os.path.exists(f'{working_dir}/snakefiles/with_control/'):
+        print(f'Directory {working_dir}/snakefiles/with_control/ not found. Creating {working_dir}/snakefiles/with_control/')
+        os.system(f'mkdir {working_dir}/snakefiles/with_control')    
+    if not os.path.exists(f'{working_dir}/snakefiles/no_control/'):
+        print(f'Directory {working_dir}/snakefiles/no_control/ not found. Creating {working_dir}/snakefiles/no_control/')
+        os.system(f'mkdir {working_dir}/snakefiles/no_control') 
 
-'''
-########################
-## Make Project Files ##
-########################
+    # Start combinatorial Snakefile generation
+    for control in controltypes:
+        for readtype in readtypes:
+            for peaktype in peaktypes:
+                for aligner in aligners:
+                    for peakcaller in peakcallers:
+                        for deduplicator in deduplicators:
+                            for i in range(1, num_tests + 1):
+                                if control == "with_control":
+                                    # Make the directory structure if it does not already exist
+                                    snakefile_dir = f'{working_dir}/snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}'
+                                    if not os.path.exists(snakefile_dir):
+                                        os.makedirs(snakefile_dir)
+                                    
+                                    # Create the snakefiles using Rocketchip
+                                    print(f"Generating {snakefile_dir}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}")
+                                    os.system(f'python3 ../rocketchip {working_dir}/project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml --data {working_dir}/seq_data/{readtype}_{peaktype}/test_{i} --src {working_dir}/.. --output_file {snakefile_dir}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
+                                    
+                                    # MACS3 has an issue with small read files requiring the --nomodel flag, so I will manually add it for the single-end data that are having problems with peak-calling
+                                    if readtype == "single" and peakcaller == "macs3":
+                                        print(f'Adding --nomodel flag in MACS3 for {snakefile_dir}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
+                                        file_to_open = f'{snakefile_dir}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}'
+                                        # Read in the file
+                                        with open(file_to_open, 'r') as file:
+                                            filedata = file.read()
+                                        # Replace the target string
+                                        filedata = filedata.replace('macs3 callpeak ', 'macs3 callpeak --nomodel ')
+                                        # Write the file out again
+                                        with open(file_to_open, 'w') as file:
+                                            file.write(filedata)
+
+# Run Snakefiles
+def run_snakefiles(authors, working_dir, controltypes, readtypes, peaktypes, aligners, peakcallers, deduplicators, num_tests):
+    # Run Snakemake for all combinations
+    for control in controltypes:
+        for readtype in readtypes:
+            for peaktype in peaktypes:
+                for aligner in aligners:
+                    for peakcaller in peakcallers:
+                        for deduplicator in deduplicators:
+                            for i in range(1, num_tests + 1):
+                                if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
+                                    continue
+                                else:
+                                    # Change into snakefile directory
+                                    os.chdir(f'{working_dir}/snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
+                                    os.system('pwd')
+                                    # Run snakefile
+                                    os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
+                                    # Go back to original directory
+                                    os.chdir(f'../../../')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Calculate true positive, true negative, false positive, and false negative peak regions
+def get_stats(real_peaks, detected_peaks, genome_size):
+	coors = defaultdict(lambda: defaultdict(str))
+
+	for peak in real_peaks:
+		coors[peak[0]]['real'] = 'start'
+		coors[peak[1]]['real'] = 'end'
+
+	for peak in detected_peaks:
+		coors[peak[0]]['dtct'] = 'start'
+		coors[peak[1]]['dtct'] = 'end'
+
+	sorted(coors.items(), key=lambda x: x[0])
+
+	poss = list(coors.keys())
+	poss.sort()
+
+	true_pos = 0
+	true_neg = 0
+	false_pos = 0
+	false_neg = 0
+
+	in_real_peak = False
+	in_detected_peak = False
+
+	previous = 1
+	previous_start = True
+	current_start = True
+	reverse = False
+	for i, pos in enumerate(poss):
+		if len(coors[pos]) > 1:
+			if coors[pos]['real'] == coors[pos]['dtct']:
+				if coors[pos]['real'] == 'start': current_start = True
+				else: current_start = False
+			else:
+				true_pos += 1
+				current_start = True
+				reverse = True
+		elif 'real' in coors[pos]:
+			if coors[pos]['real'] == 'start': current_start = True
+			else: current_start = False
+		else:
+			if coors[pos]['dtct'] == 'start': current_start = True
+			else: current_start = False
+		
+		if previous_start == current_start: buf = 0
+		elif previous_start and not current_start: buf = 1
+		else: buf = -1
+		
+		if not in_real_peak and not in_detected_peak:
+			true_neg += pos - previous + buf
+		if not in_real_peak and in_detected_peak:
+			false_pos += pos - previous + buf
+		if in_real_peak and not in_detected_peak:
+			false_neg += pos - previous + buf
+		if in_real_peak and in_detected_peak:
+			true_pos += pos - previous + buf
+		
+		previous_start = current_start
+		if reverse:
+			previous_start = not previous_start
+			reverse = False
+			
+		if len(coors[pos]) > 1:
+			in_detected_peak = not in_detected_peak
+			in_real_peak = not in_real_peak
+		elif 'real' in coors[pos]:
+			in_real_peak = not in_real_peak
+		else:
+			in_detected_peak = not in_detected_peak
+
+		previous = pos 
+
+	if poss[-1] < genome_size: true_neg += genome_size - poss[-1]
+	
+	return true_pos, true_neg, false_pos, false_neg
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
 
 for control in controltypes:
     for readtype in readtypes:
@@ -75,83 +304,6 @@ for control in controltypes:
                 for peakcaller in peakcallers:
                     for deduplicator in deduplicators:
                         for i in range(1, num_tests + 1):
-                            if control == "with_control":
-                                proj_file_info = textwrap.dedent(f"""
-                                Author: {authors}
-                                Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
-                                Genome:
-                                    Name: genome
-                                    Location: '{working_dir}/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
-                                Reads:
-                                    Samples:
-                                        grp1: 
-                                            - '{working_dir}/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
-                                            - '{working_dir}/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
-                                    Controls:
-                                        ctl1: 
-                                            - '{working_dir}/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/input'
-                                Readtype: {readtype}
-                                Peaktype: {peaktype}
-                                Aligner: {aligner}
-                                Deduplicator: {deduplicator}
-                                Peakcaller: {peakcaller}
-                                Threads: 1
-                                """)
-                            elif control == "no_control":
-                                if peakcaller == "cisgenome" or peakcaller == "pepr": continue
-                                proj_file_info = textwrap.dedent(f"""
-                                Author: {authors}
-                                Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
-                                Genome:
-                                    Name: genome
-                                    Location: '{working_dir}/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
-                                Reads:
-                                    Samples:
-                                        grp1: 
-                                            - '{working_dir}/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
-                                            - '{working_dir}/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
-                                    Controls:
-                                Readtype: {readtype}
-                                Peaktype: {peaktype}
-                                Aligner: {aligner}
-                                Deduplicator: {deduplicator}
-                                Peakcaller: {peakcaller}
-                                Threads: 1
-                                """)
-                            print(f'Generating project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml...')
-                            os.system(f'touch project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml')
-                            with open(f'project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml', 'w') as f:
-                                f.write(f'{proj_file_info}')
-                            os.system(f'sed -i \'1d\' project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml')
-
-#####################
-## Make Snakefiles ##
-#####################  
-
-                            # Make the directory structure if it does not already exist
-                            if not os.path.exists(f'snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}'):
-                                os.system(f'mkdir snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
-                            
-                            # Create the snakefiles using Rocketchip 
-                            print(f"Generating snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}")
-                            os.system(f'python3 ../rocketchip {working_dir}/exp_vs_obs/project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml --data {working_dir}/exp_vs_obs/seq_data/{readtype}_{peaktype}/test_{i} --src {working_dir} --output_file {working_dir}/exp_vs_obs/snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
-                            
-                            # MACS3 has an issue with small read files requiring the --nomodel flag, so I will manually add it for the single-end data that are having problems with peak-calling
-                            if readtype == "single" and peakcaller == "macs3":
-                                print(f'Adding --nomodel flag in MACS3 for snakefile snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
-                                file_to_open = f'snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}'
-                                # Read in the file
-                                with open(file_to_open, 'r') as file :
-                                    filedata = file.read()
-                                # Replace the target string
-                                filedata = filedata.replace('macs3 callpeak ', 'macs3 callpeak --nomodel ')
-                                # Write the file out again
-                                with open(file_to_open, 'w') as file:
-                                    file.write(filedata)
-                       
-####################
-## Run Snakefiles ##
-####################
                             if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
                                 continue
                             else:
@@ -162,10 +314,10 @@ for control in controltypes:
                                 os.system(f'snakemake -j 4 -s exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
                                 # Go back to original directory
                                 os.chdir(f'../../../')
-                            
-#################
-## Count Peaks ##
-#################
+'''                            
+#############################################
+## Count and Compare Called vs. True Peaks ##
+#############################################
 
                             if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
                                 continue
@@ -255,8 +407,8 @@ for control in controltypes:
                                 
 # Save to CSV
 df.to_csv("tables_and_figures/expected_vs_observed_peaks_master.csv", index=False)
-'''
 
+'''
 ###############
 ## Visualize ##
 ###############
@@ -264,7 +416,6 @@ df.to_csv("tables_and_figures/expected_vs_observed_peaks_master.csv", index=Fals
 # Read in data
 df = pd.read_csv('tables_and_figures/expected_vs_observed_peaks_master.csv')
 
-'''
 #######################
 ## Overall Histogram ##
 #######################
@@ -308,7 +459,6 @@ plt.title('Read Coverage vs. Observed Peaks')
 plt.grid(False)
 plt.savefig('tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
 plt.close()
-'''
 
 ##############
 ## Heatmaps ##
@@ -334,7 +484,6 @@ for group_name, group_data in heatmap_combinations:
     print("\n")
     break
 
-'''
 # Generate a heatmap for each unique combination of peak type, endedness, and peak caller
 for (endedness, peak_type, deduplicator), data in unique_combinations.groupby(["Endedness", "Peak_Type", "Deduplicator"]):
     
@@ -364,13 +513,11 @@ for (endedness, peak_type, deduplicator), data in unique_combinations.groupby(["
     # Save figure
     plt.savefig(f'tables_and_figures/heatmap_{endedness}_{peak_type}_{peakcaller}.pdf')
     plt.close()
-'''
 
 #############
 ## Scratch ##
 #############
 
-'''
 #########################
 ## Table of Statistics ##
 #########################
