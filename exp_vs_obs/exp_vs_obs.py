@@ -29,7 +29,7 @@ authors = 'Viktoria_Haghani_and_Aditi_Goyal_and_Alan_Zhang'
 working_dir = '/share/korflab/home/viki/rocketchip_tests/exp_vs_obs' # Do NOT end the directory name with / here
 
 # Combinatorial testing variables
-controltypes = ["no_control", "with_control"]  
+controltypes = ["with_control", "no_control"]  
 readtypes = ["paired", "single"]
 peaktypes = ["narrow", "broad"]
 aligners = ["bwa_mem", "bowtie2", "STAR"]
@@ -180,7 +180,7 @@ def run_snakefiles(working_dir, controltypes, readtypes, peaktypes, aligners, pe
                                     os.chdir(f'../../../')
 
 # Count peaks and compare called vs. true peaks
-def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakcallers, deduplicators, num_tests):
+def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakcallers, deduplicators, num_tests, output_path):
     for control in controltypes:
         for readtype in readtypes:
             for peaktype in peaktypes:
@@ -228,27 +228,74 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     elif readtype == "single":
                                         paired = "NA"
                                     
-                                    # Count peaks and determine peak locations
+                                    # Count peaks and determine peak locations for MACS3 outputs
                                     if peakcaller == "macs3":
                                         os.chdir('06_macs3_peaks')
                                         if control == "with_control":
                                             if peaktype == "narrow":
-                                                result = subprocess.run('less grp1_ctl1_peaks.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                                # Determine peak locations
+                                                detected_peaks = []
+                                                with open('grp1_ctl1_peaks.narrowPeak', 'r') as file:
+                                                    # Read the file line by line
+                                                    for line in file:
+                                                        # Split the line into columns
+                                                        columns = line.strip().split('\t')
+                                                        # Access the values in the second and third columns
+                                                        peak_range = (int(columns[1]), int(columns[2]))
+                                                        detected_peaks.append(peak_range)
+                                                # Count peaks
+                                                obs_peak_num = len(detected_peaks)
                                             elif peaktype == "broad":
-                                                result = subprocess.run('less grp1_ctl1_peaks.broadPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                                # Determine peak locations
+                                                detected_peaks = []
+                                                with open('grp1_ctl1_peaks.broadPeak', 'r') as file:
+                                                    # Read the file line by line
+                                                    for line in file:
+                                                        # Split the line into columns
+                                                        columns = line.strip().split('\t')
+                                                        # Access the values in the second and third columns
+                                                        peak_range = (int(columns[1]), int(columns[2]))
+                                                        detected_peaks.append(peak_range)
+                                                # Count peaks
+                                                obs_peak_num = len(detected_peaks)
                                         elif control == "no_control":
                                             if peaktype == "narrow":
-                                                result = subprocess.run('less grp1_peaks.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
+                                                # Determine peak locations
+                                                detected_peaks = []
+                                                with open('grp1_peaks.narrowPeak', 'r') as file:
+                                                    # Read the file line by line
+                                                    for line in file:
+                                                        # Split the line into columns
+                                                        columns = line.strip().split('\t')
+                                                        # Access the values in the second and third columns
+                                                        peak_range = (int(columns[1]), int(columns[2]))
+                                                        detected_peaks.append(peak_range)
+                                                # Count peaks
+                                                obs_peak_num = len(detected_peaks)
                                             elif peaktype == "broad":
-                                                result = subprocess.run('less grp1_peaks.broadPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
-                                        obs_peak_num = int(result.stdout.strip())
+                                                # Determine peak locations
+                                                detected_peaks = []
+                                                with open('grp1_peaks.broadPeak', 'r') as file:
+                                                    # Read the file line by line
+                                                    for line in file:
+                                                        # Split the line into columns
+                                                        columns = line.strip().split('\t')
+                                                        # Access the values in the second and third columns
+                                                        peak_range = (int(columns[1]), int(columns[2]))
+                                                        detected_peaks.append(peak_range)
+                                                # Count peaks
+                                                obs_peak_num = len(detected_peaks)
                                         os.chdir('..')
+                                    
+                                    # Count peaks and determine peak locations for Cisgenome outputs
                                     elif peakcaller == "cisgenome":
                                         os.chdir('06_cisgenome_peaks')
                                         result = subprocess.run('less grp1_ctl1_peak.cod | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
                                         obs_peak_num = int(result.stdout.strip())
                                         obs_peak_num = obs_peak_num - 1
                                         os.chdir('..')
+
+                                    # Count peaks and determine peak locations for Genrich outputs
                                     elif peakcaller == "genrich":
                                         os.chdir('06_genrich_peaks')
                                         if control == "with_control":
@@ -258,6 +305,8 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                             result = subprocess.run('less grp1_peak.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
                                             obs_peak_num = int(result.stdout.strip())
                                         os.chdir('..')
+                                    
+                                    # Count peaks and determine peak locations for PePr outputs
                                     elif peakcaller == "pepr":
                                         os.chdir('06_pepr_peaks')
                                         if os.path.isfile('grp1_ctl1__PePr_peaks.bed'):
@@ -266,6 +315,8 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                         else:
                                             obs_peak_num = 0
                                         os.chdir('..')
+                                    
+                                    # View peak number
                                     print(f'Observed peaks: {obs_peak_num}')
                                     
                                     # Go back to original directory
@@ -274,11 +325,8 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     # Add test to dataframe 
                                     df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, reads_per_peak, padding, reads_std_dev, width, length, paired, flank, expected_peaks, obs_peak_num]
                                     
-
-
-
-
-
+                                    # Save to CSV
+                                    df.to_csv(output_path, index=False)
 
 # Calculate true positive, true negative, false positive, and false negative peak regions
 def get_stats(real_peaks, detected_peaks, genome_size):
@@ -357,197 +405,75 @@ def get_stats(real_peaks, detected_peaks, genome_size):
 	
 	return true_pos, true_neg, false_pos, false_neg
 
+def observed_peaks_histogram(dataframe, output_file):
+    # Read in data 
+    df = pd.read_csv(dataframe)
 
-
-
-# Save to CSV
-df.to_csv("tables_and_figures/expected_vs_observed_peaks_master.csv", index=False)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-###############
-## Visualize ##
-###############
-
-# Read in data
-df = pd.read_csv('tables_and_figures/expected_vs_observed_peaks_master.csv')
-
-#######################
-## Overall Histogram ##
-#######################
-
-# Find the maximum value of observed peaks in order to adjust visualization
-max_observed_peaks = df['Observed_Peaks'].max()
-print(f'{max_observed_peaks} was the highest observed peak number.')
-
-# Plot histogram 
-plt.hist(df['Observed_Peaks'], bins=200, range=(0, 2000), color='skyblue', edgecolor='black')
-
-# Set x-axis tick positions and labels
-#plt.xticks(range(0, 101, 10)) 
-plt.xlabel('Number of Observed Peaks')
-plt.ylabel('Frequency')
-plt.title('Total Distribution of Observed Peaks')
-plt.show()
-
-# Save figure
-plt.savefig('tables_and_figures/total_distribution_of_observed_peaks.pdf')
-plt.close()
-
-###############################
-## Visualize Data Parameters ##
-###############################
-
-# Perform linear regression
-fit = np.polyfit(df['Reads_per_Peak'], df['Observed_Peaks'], 1)
-fit_fn = np.poly1d(fit)
-
-# Create a scatter plot
-plt.scatter(df['Reads_per_Peak'], df['Observed_Peaks'], color = 'blue', marker = 'o')
-
-# Add best-fit line
-plt.plot(df['Reads_per_Peak'], fit_fn(df['Reads_per_Peak']), color='red') 
-
-# Add labels
-plt.xlabel('Reads per Peak')
-plt.ylabel('Observed Peaks')
-plt.title('Read Coverage vs. Observed Peaks')
-plt.grid(False)
-plt.savefig('tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
-plt.close()
-
-##############
-## Heatmaps ##
-##############
-
-# Filter unique combinations of Endedness, Peak_Type, and Peak_Caller
-heatmap_combinations = df.groupby(["Endedness", "Peak_Type"])
-
-for group_name, group_data in heatmap_combinations:
+    # Find the maximum value of observed peaks in order to adjust visualization
+    max_observed_peaks = df['Observed_Peaks'].max()
+    print(f'{max_observed_peaks} was the highest observed peak number.')
     
-    # Assign variable names
-    endedness, peak_type = group_name
+    # Round range up to the nearest multiple of 10
+    max_range = ((max_observed_peaks + 9) // 10) * 10
     
-    # Re-label the data
-    for index, row in group_data.iterrows():
-        deduplicator = row["Deduplicator"]
-        aligner = row["Aligner"]
-        test_dataset = row["Test_Dataset"]
-        new_label = f"{deduplicator}_{aligner}_{test_dataset}"
-        df.at[index, "New_Label"] = new_label
-       
-    print(group_data)
-    print("\n")
-    break
-
-# Generate a heatmap for each unique combination of peak type, endedness, and peak caller
-for (endedness, peak_type, deduplicator), data in unique_combinations.groupby(["Endedness", "Peak_Type", "Deduplicator"]):
+    # Divide by number into every 10
+    bin_num = int(max_range/10)
     
-    # Pivot the data to create a matrix for the heatmap
-    pivot_df = data.pivot(index="Test_Dataset", columns="Aligner", values="Observed_Peaks")
+    # Plot histogram 
+    plt.hist(df['Observed_Peaks'], bins = bin_num, range = (0, max_range), color = 'skyblue', edgecolor = 'black')
     
-    # Plot size
-    plt.figure(figsize=(10, 6))
-    sns.heatmap(pivot_df, annot=True, fmt=".2f", cmap="coolwarm", cbar_kws={'label': 'Observed Peaks'})
-
-    # Format naming
-    if peakcaller == "macs3": 
-        peakcaller_name = "MACS3"
-    elif peakcaller == "genrich":
-        peakcaller_name = "Genrich"
-    elif peakcaller == "cisgenome":
-        peakcaller_name = "CisGenome"
-    elif peakcaller == "pepr":
-        peakcaller_name = "PePr"
-    
-    # Configure titles and axis labels
-    plt.title(f'Number of Peaks for {endedness.title()}-End Data with {peak_type.title()} Peaks using {peakcaller_name}')
-    plt.xlabel("Aligner")
-    plt.ylabel("Deduplicator")
-    plt.tight_layout()
+    # Set x-axis tick positions and labels
+    plt.xlabel('Number of Observed Peaks')
+    plt.ylabel('Frequency')
+    plt.title('Total Distribution of Observed Peaks')
+    plt.show()
     
     # Save figure
-    plt.savefig(f'tables_and_figures/heatmap_{endedness}_{peak_type}_{peakcaller}.pdf')
+    plt.savefig(output_file)
     plt.close()
 
-#############
-## Scratch ##
-#############
+def reads_per_peak_vs_obs_peaks(dataframe, output_file):
+    # Read in data 
+    df = pd.read_csv(dataframe)
 
-#########################
-## Table of Statistics ##
-#########################
-
-# Condense tests for each condition and calculate basic stats
-proportions_per_condition = df.groupby(["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"]).agg(
-    Min_Observed_Peaks = ("Observed_Peaks", "min"),
-    Max_Observed_Peaks = ("Observed_Peaks", "max"),
-    Std_Observed_Peaks = ("Observed_Peaks", "std"),
-    Mean_Observed_Peaks = ("Observed_Peaks", "mean"),
-    Percent_Accuracy = ("Observed_Peaks", lambda x: (x == 50).sum() / len(x) * 100),
-).reset_index()
-
-# Transpose "Test_Dataset" values into columns for new dataframe
-pivot_df = df.pivot_table(index=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"],
-                          columns="Test_Dataset",
-                          values="Observed_Peaks",
-                          aggfunc='first')
-
-# Rename the columns to add the prefix "Test_Data_"
-pivot_df.columns = [f"Test_Data_{col}" for col in pivot_df.columns]
-
-# Merge 'proportions_per_condition' with the transposed dataframe
-merged_df = pd.merge(proportions_per_condition, pivot_df, on=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control"])
-
-# Add column
-merged_df["Expected_Peaks"] = 50
-
-# Add true_positives, true_negatives, false_positives, and false_negatives
-print(merged_df)
-
-# Calculate sensitivity
-
-# Specificity
-
-# Precision
-
-# Calculate read density
-
-# Delineate column order
-desired_order = ["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control", "Expected_Peaks"] + \
-                [f"Test_Data_{i}" for i in range(1, 7)] + \
-                ["True_Positives", "True_Negatives", "False_Positives", "False_Negatives", "Min_Observed_Peaks", "Max_Observed_Peaks", "Std_Observed_Peaks", "Mean_Observed_Peaks", "Sensitivity", "Specificity", "Precision", "Percent_Accuracy"]
-
-# Reorder columns 
-merged_df = merged_df.reindex(columns=desired_order)
-
-# Sort by percent accuracy 
-merged_df = merged_df.sort_values(by="Percent_Accuracy", ascending = False)
-
-# Save to CSV
-merged_df.to_csv("02_tables_and_figures/02_expected_vs_observed_results.csv", index = False)
-'''
+    # Perform linear regression
+    fit = np.polyfit(df['Reads_per_Peak'], df['Observed_Peaks'], 1)
+    fit_fn = np.poly1d(fit)
+    
+    # Create a scatter plot
+    plt.scatter(df['Reads_per_Peak'], df['Observed_Peaks'], color = 'blue', marker = 'o')
+    
+    # Add best-fit line
+    plt.plot(df['Reads_per_Peak'], fit_fn(df['Reads_per_Peak']), color='red') 
+    
+    # Add labels
+    plt.xlabel('Reads per Peak')
+    plt.ylabel('Observed Peaks')
+    plt.title('Read Coverage vs. Observed Peaks')
+    plt.grid(False)
+    
+    # Save figure
+    plt.savefig(output_file)
+    plt.close()
 
 ####################
 ## Run Everything ##
 ####################
 
 # Generate project_files
-generate_project_files(authors = authors, working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+#generate_project_files(authors = authors, working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Generate Snakefiles
-generate_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+#generate_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Run Snakefiles
-run_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+#run_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+
+# Count peaks and calculate statistics based on peak calling
+count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
+
+# Generate histogram
+#observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
+
+# Linear regression to compare reads per peak vs. observed number of peaks
+#reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
