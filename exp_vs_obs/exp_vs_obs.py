@@ -44,7 +44,7 @@ df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "
 ## Delineate Functions ##
 #########################
 
-# Make project files
+# Make project files 
 def generate_project_files(authors, working_dir, controltypes, readtypes, peaktypes, aligners, peakcallers, deduplicators, num_tests):
     # Set up directory structure for project files if needed
     if not os.path.exists(f'{working_dir}/project_files/'):
