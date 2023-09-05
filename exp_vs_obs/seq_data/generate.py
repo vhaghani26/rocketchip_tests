@@ -1,6 +1,10 @@
 import sys
 import os
 
+'''
+python3 generate.py ./datasynth 2> log
+'''
+
 # Path to datasynth program
 datasynth = sys.argv[1]
 
