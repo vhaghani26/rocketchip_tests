@@ -282,7 +282,6 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     
                                     # Calculate the length of the sequence
                                     genome_size = len(sequence)
-                                    print(f'Genome size: {genome_size}')
                                    
                                     # Assign global data frame variables 
                                     if readtype == "paired":
@@ -312,8 +311,6 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                                 peak_length = 1500
                                             peak_range = (peak_summit - peak_length/2, peak_summit + peak_length/2)
                                             real_peaks.append(peak_range)
-                                    
-                                    print(f'Real peaks: {real_peaks}')
                                     
                                     # Assign sequence metadata
                                     reads_per_peak = 2**(i+1)
@@ -470,8 +467,6 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     
                                     # Go back to original directory
                                     os.chdir(f'../../../')
-                                    
-                                    break
     
                                     # Add test to dataframe 
                                     df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, reads_per_peak, padding, reads_std_dev, width, length, paired, flank, expected_peaks, obs_peak_num]
