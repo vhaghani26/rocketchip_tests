@@ -1,384 +1,48 @@
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_1/genome.fa'
-./datasynth exp_a 1000 4 -o paired_narrow_1 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_1/genome.fa
-gzip: paired_narrow_1/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_1/genome.fa'
+./datasynth exp_a 1000 4 -o paired_narrow_1 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 4 -o paired_narrow_1 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_1/genome.fa
-gzip: paired_narrow_1/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_2/genome.fa'
-./datasynth exp_a 1000 8 -o paired_narrow_2 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_2/genome.fa
-gzip: paired_narrow_2/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_2/genome.fa'
+./datasynth exp_a 1000 8 -o paired_narrow_2 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 8 -o paired_narrow_2 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_2/genome.fa
-gzip: paired_narrow_2/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_3/genome.fa'
-./datasynth exp_a 1000 16 -o paired_narrow_3 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_3/genome.fa
-gzip: paired_narrow_3/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_3/genome.fa'
+./datasynth exp_a 1000 16 -o paired_narrow_3 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 16 -o paired_narrow_3 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_3/genome.fa
-gzip: paired_narrow_3/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_4/genome.fa'
-./datasynth exp_a 1000 32 -o paired_narrow_4 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_4/genome.fa
-gzip: paired_narrow_4/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_4/genome.fa'
+./datasynth exp_a 1000 32 -o paired_narrow_4 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 32 -o paired_narrow_4 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_4/genome.fa
-gzip: paired_narrow_4/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_5/genome.fa'
-./datasynth exp_a 1000 64 -o paired_narrow_5 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_5/genome.fa
-gzip: paired_narrow_5/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_5/genome.fa'
+./datasynth exp_a 1000 64 -o paired_narrow_5 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 64 -o paired_narrow_5 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_5/genome.fa
-gzip: paired_narrow_5/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_6/genome.fa'
-./datasynth exp_a 1000 128 -o paired_narrow_6 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_6/genome.fa
-gzip: paired_narrow_6/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_narrow_6/genome.fa'
+./datasynth exp_a 1000 128 -o paired_narrow_6 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 128 -o paired_narrow_6 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --paired 10 --genome paired_narrow_6/genome.fa
-gzip: paired_narrow_6/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_1/genome.fa'
-./datasynth exp_a 1000 4 -o paired_broad_1 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_1/genome.fa
-gzip: paired_broad_1/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_1/genome.fa'
+./datasynth exp_a 1000 4 -o paired_broad_1 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 4 -o paired_broad_1 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_1/genome.fa
-gzip: paired_broad_1/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_2/genome.fa'
-./datasynth exp_a 1000 8 -o paired_broad_2 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_2/genome.fa
-gzip: paired_broad_2/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_2/genome.fa'
+./datasynth exp_a 1000 8 -o paired_broad_2 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 8 -o paired_broad_2 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_2/genome.fa
-gzip: paired_broad_2/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_3/genome.fa'
-./datasynth exp_a 1000 16 -o paired_broad_3 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_3/genome.fa
-gzip: paired_broad_3/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_3/genome.fa'
+./datasynth exp_a 1000 16 -o paired_broad_3 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 16 -o paired_broad_3 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_3/genome.fa
-gzip: paired_broad_3/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_4/genome.fa'
-./datasynth exp_a 1000 32 -o paired_broad_4 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_4/genome.fa
-gzip: paired_broad_4/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_4/genome.fa'
+./datasynth exp_a 1000 32 -o paired_broad_4 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 32 -o paired_broad_4 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_4/genome.fa
-gzip: paired_broad_4/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_5/genome.fa'
-./datasynth exp_a 1000 64 -o paired_broad_5 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_5/genome.fa
-gzip: paired_broad_5/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_5/genome.fa'
+./datasynth exp_a 1000 64 -o paired_broad_5 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 64 -o paired_broad_5 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_5/genome.fa
-gzip: paired_broad_5/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_6/genome.fa'
-./datasynth exp_a 1000 128 -o paired_broad_6 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_6/genome.fa
-gzip: paired_broad_6/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'paired_broad_6/genome.fa'
+./datasynth exp_a 1000 128 -o paired_broad_6 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --control input
 ./datasynth exp_b 1000 128 -o paired_broad_6 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --paired 10 --genome paired_broad_6/genome.fa
-gzip: paired_broad_6/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_1/genome.fa'
-./datasynth exp_a 1000 4 -o single_narrow_1 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_1/genome.fa
-gzip: single_narrow_1/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_1/genome.fa'
+./datasynth exp_a 1000 4 -o single_narrow_1 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 4 -o single_narrow_1 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_1/genome.fa
-gzip: single_narrow_1/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_2/genome.fa'
-./datasynth exp_a 1000 8 -o single_narrow_2 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_2/genome.fa
-gzip: single_narrow_2/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_2/genome.fa'
+./datasynth exp_a 1000 8 -o single_narrow_2 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 8 -o single_narrow_2 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_2/genome.fa
-gzip: single_narrow_2/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_3/genome.fa'
-./datasynth exp_a 1000 16 -o single_narrow_3 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_3/genome.fa
-gzip: single_narrow_3/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_3/genome.fa'
+./datasynth exp_a 1000 16 -o single_narrow_3 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 16 -o single_narrow_3 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_3/genome.fa
-gzip: single_narrow_3/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_4/genome.fa'
-./datasynth exp_a 1000 32 -o single_narrow_4 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_4/genome.fa
-gzip: single_narrow_4/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_4/genome.fa'
+./datasynth exp_a 1000 32 -o single_narrow_4 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 32 -o single_narrow_4 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_4/genome.fa
-gzip: single_narrow_4/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_5/genome.fa'
-./datasynth exp_a 1000 64 -o single_narrow_5 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_5/genome.fa
-gzip: single_narrow_5/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_5/genome.fa'
+./datasynth exp_a 1000 64 -o single_narrow_5 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 64 -o single_narrow_5 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_5/genome.fa
-gzip: single_narrow_5/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_6/genome.fa'
-./datasynth exp_a 1000 128 -o single_narrow_6 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_6/genome.fa
-gzip: single_narrow_6/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_narrow_6/genome.fa'
+./datasynth exp_a 1000 128 -o single_narrow_6 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 128 -o single_narrow_6 --padding 2500 --stddev 0.1 --width 400 --length 150 --flank 2000 --genome single_narrow_6/genome.fa
-gzip: single_narrow_6/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_1/genome.fa'
-./datasynth exp_a 1000 4 -o single_broad_1 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_1/genome.fa
-gzip: single_broad_1/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_1/genome.fa'
+./datasynth exp_a 1000 4 -o single_broad_1 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 4 -o single_broad_1 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_1/genome.fa
-gzip: single_broad_1/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_2/genome.fa'
-./datasynth exp_a 1000 8 -o single_broad_2 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_2/genome.fa
-gzip: single_broad_2/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_2/genome.fa'
+./datasynth exp_a 1000 8 -o single_broad_2 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 8 -o single_broad_2 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_2/genome.fa
-gzip: single_broad_2/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_3/genome.fa'
-./datasynth exp_a 1000 16 -o single_broad_3 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_3/genome.fa
-gzip: single_broad_3/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_3/genome.fa'
+./datasynth exp_a 1000 16 -o single_broad_3 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 16 -o single_broad_3 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_3/genome.fa
-gzip: single_broad_3/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_4/genome.fa'
-./datasynth exp_a 1000 32 -o single_broad_4 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_4/genome.fa
-gzip: single_broad_4/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_4/genome.fa'
+./datasynth exp_a 1000 32 -o single_broad_4 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 32 -o single_broad_4 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_4/genome.fa
-gzip: single_broad_4/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_5/genome.fa'
-./datasynth exp_a 1000 64 -o single_broad_5 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_5/genome.fa
-gzip: single_broad_5/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_5/genome.fa'
+./datasynth exp_a 1000 64 -o single_broad_5 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 64 -o single_broad_5 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_5/genome.fa
-gzip: single_broad_5/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_6/genome.fa'
-./datasynth exp_a 1000 128 -o single_broad_6 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_6/genome.fa
-gzip: single_broad_6/*.fastq: No such file or directory
-Traceback (most recent call last):
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/./datasynth", line 68, in <module>
-    for idn, seq in read_record(arg.genome): genome = seq
-  File "/share/korflab/home/viki/rocketchip_tests/exp_vs_obs/seq_data/readfasta.py", line 22, in read_record
-    else:                          fp = open(filename)
-FileNotFoundError: [Errno 2] No such file or directory: 'single_broad_6/genome.fa'
+./datasynth exp_a 1000 128 -o single_broad_6 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --control input
 ./datasynth exp_b 1000 128 -o single_broad_6 --padding 5000 --stddev 0.1 --width 1500 --length 150 --flank 2000 --genome single_broad_6/genome.fa
-gzip: single_broad_6/*.fastq: No such file or directory
