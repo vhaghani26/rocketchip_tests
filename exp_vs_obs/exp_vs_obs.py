@@ -179,6 +179,83 @@ def run_snakefiles(working_dir, controltypes, readtypes, peaktypes, aligners, pe
                                     # Go back to original directory
                                     os.chdir(f'../../../')
 
+# Calculate true positive, true negative, false positive, and false negative peak regions
+def get_stats(real_peaks, detected_peaks, genome_size):
+	coors = defaultdict(lambda: defaultdict(str))
+
+	for peak in real_peaks:
+		coors[peak[0]]['real'] = 'start'
+		coors[peak[1]]['real'] = 'end'
+
+	for peak in detected_peaks:
+		coors[peak[0]]['dtct'] = 'start'
+		coors[peak[1]]['dtct'] = 'end'
+
+	sorted(coors.items(), key=lambda x: x[0])
+
+	poss = list(coors.keys())
+	poss.sort()
+
+	true_pos = 0
+	true_neg = 0
+	false_pos = 0
+	false_neg = 0
+
+	in_real_peak = False
+	in_detected_peak = False
+
+	previous = 1
+	previous_start = True
+	current_start = True
+	reverse = False
+	for i, pos in enumerate(poss):
+		if len(coors[pos]) > 1:
+			if coors[pos]['real'] == coors[pos]['dtct']:
+				if coors[pos]['real'] == 'start': current_start = True
+				else: current_start = False
+			else:
+				true_pos += 1
+				current_start = True
+				reverse = True
+		elif 'real' in coors[pos]:
+			if coors[pos]['real'] == 'start': current_start = True
+			else: current_start = False
+		else:
+			if coors[pos]['dtct'] == 'start': current_start = True
+			else: current_start = False
+		
+		if previous_start == current_start: buf = 0
+		elif previous_start and not current_start: buf = 1
+		else: buf = -1
+		
+		if not in_real_peak and not in_detected_peak:
+			true_neg += pos - previous + buf
+		if not in_real_peak and in_detected_peak:
+			false_pos += pos - previous + buf
+		if in_real_peak and not in_detected_peak:
+			false_neg += pos - previous + buf
+		if in_real_peak and in_detected_peak:
+			true_pos += pos - previous + buf
+		
+		previous_start = current_start
+		if reverse:
+			previous_start = not previous_start
+			reverse = False
+			
+		if len(coors[pos]) > 1:
+			in_detected_peak = not in_detected_peak
+			in_real_peak = not in_real_peak
+		elif 'real' in coors[pos]:
+			in_real_peak = not in_real_peak
+		else:
+			in_detected_peak = not in_detected_peak
+
+		previous = pos 
+
+	if poss[-1] < genome_size: true_neg += genome_size - poss[-1]
+	
+	return true_pos, true_neg, false_pos, false_neg
+
 # Count peaks and compare called vs. true peaks
 def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakcallers, deduplicators, num_tests, output_path):
     for control in controltypes:
@@ -198,6 +275,16 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     # Assign global data frame variables 
                                     genome_path = f'{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
                                     
+                                    # Determine the genome size
+                                    with open(genome_path, "r") as fasta_file:
+                                        # Read all lines in the file (excluding header lines)
+                                        sequence = "".join(line.strip() for line in fasta_file if not line.startswith(">"))
+                                    
+                                    # Calculate the length of the sequence
+                                    genome_size = len(sequence)
+                                    print(f'Genome size: {genome_size}')
+                                   
+                                    # Assign global data frame variables 
                                     if readtype == "paired":
                                         read_1_for_path = f'{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_a_1.fastq.gz'
                                         read_1_rev_path = f'{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_a_2.fastq.gz'
@@ -208,6 +295,25 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                         read_1_rev_path = "NA"
                                         read_2_for_path = f'{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_b.fastq.gz'
                                         read_2_rev_path = "NA"
+                                    
+                                    # Determine real peaks (note exp_a.peaks and exp_b.peaks are identical)
+                                    real_peak_path = f'{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_a.peaks'
+                                    real_peaks = []
+                                    with open(real_peak_path, "r") as file:
+                                        # Read the file line by line
+                                        for line in file:
+                                            # Split the line into columns
+                                            peak_summit = line.strip()
+                                            peak_summit = int(peak_summit)
+                                            # Access the values in the second and third columns
+                                            if peaktype == "narrow":
+                                                peak_length = 400
+                                            elif peaktype == "broad":
+                                                peak_length = 1500
+                                            peak_range = (peak_summit - peak_length/2, peak_summit + peak_length/2)
+                                            real_peaks.append(peak_range)
+                                    
+                                    print(f'Real peaks: {real_peaks}')
                                     
                                     # Assign sequence metadata
                                     reads_per_peak = 2**(i+1)
@@ -290,28 +396,71 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     # Count peaks and determine peak locations for Cisgenome outputs
                                     elif peakcaller == "cisgenome":
                                         os.chdir('06_cisgenome_peaks')
-                                        result = subprocess.run('less grp1_ctl1_peak.cod | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
-                                        obs_peak_num = int(result.stdout.strip())
-                                        obs_peak_num = obs_peak_num - 1
+                                        # Determine peak locations
+                                        detected_peaks = []
+                                        # Open the file for reading
+                                        with open("grp1_ctl1_peak.cod", "r") as file:
+                                            # Skip the header line
+                                            next(file)
+                                            # Read the file line by line
+                                            for line in file:
+                                                # Split the line into columns
+                                                columns = line.strip().split("\t")
+                                                # Access the values in the third and fourth columns
+                                                peak_range = (int(columns[2]), int(columns[3]))
+                                                detected_peaks.append(peak_range)
+                                                
+                                        # Count peaks
+                                        obs_peak_num = len(detected_peaks)
                                         os.chdir('..')
 
                                     # Count peaks and determine peak locations for Genrich outputs
                                     elif peakcaller == "genrich":
                                         os.chdir('06_genrich_peaks')
                                         if control == "with_control":
-                                            result = subprocess.run('less grp1_ctl1_peak.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
-                                            obs_peak_num = int(result.stdout.strip())
+                                            # Determine peak locations
+                                            detected_peaks = []
+                                            with open('grp1_ctl1_peak.narrowPeak', 'r') as file:
+                                                # Read the file line by line
+                                                for line in file:
+                                                    # Split the line into columns
+                                                    columns = line.strip().split('\t')
+                                                    # Access the values in the second and third columns
+                                                    peak_range = (int(columns[1]), int(columns[2]))
+                                                    detected_peaks.append(peak_range)
+                                            # Count peaks
+                                            obs_peak_num = len(detected_peaks)
                                         elif control == "no_control":
-                                            result = subprocess.run('less grp1_peak.narrowPeak | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
-                                            obs_peak_num = int(result.stdout.strip())
+                                            # Determine peak locations
+                                            detected_peaks = []
+                                            with open('grp1_peak.narrowPeak', 'r') as file:
+                                                # Read the file line by line
+                                                for line in file:
+                                                    # Split the line into columns
+                                                    columns = line.strip().split('\t')
+                                                    # Access the values in the second and third columns
+                                                    peak_range = (int(columns[1]), int(columns[2]))
+                                                    detected_peaks.append(peak_range)
+                                            # Count peaks
+                                            obs_peak_num = len(detected_peaks)
                                         os.chdir('..')
                                     
                                     # Count peaks and determine peak locations for PePr outputs
                                     elif peakcaller == "pepr":
                                         os.chdir('06_pepr_peaks')
                                         if os.path.isfile('grp1_ctl1__PePr_peaks.bed'):
-                                            result = subprocess.run('less grp1_ctl1__PePr_peaks.bed | wc -l', shell = True, stdout = subprocess.PIPE, text = True)
-                                            obs_peak_num = int(result.stdout.strip())
+                                            # Determine peak locations
+                                            detected_peaks = []
+                                            with open('grp1_ctl1__PePr_peaks.bed', 'r') as file:
+                                                # Read the file line by line
+                                                for line in file:
+                                                    # Split the line into columns
+                                                    columns = line.strip().split('\t')
+                                                    # Access the values in the second and third columns
+                                                    peak_range = (int(columns[1]), int(columns[2]))
+                                                    detected_peaks.append(peak_range)
+                                            # Count peaks
+                                            obs_peak_num = len(detected_peaks)
                                         else:
                                             obs_peak_num = 0
                                         os.chdir('..')
@@ -321,89 +470,14 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     
                                     # Go back to original directory
                                     os.chdir(f'../../../')
+                                    
+                                    break
     
                                     # Add test to dataframe 
                                     df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, reads_per_peak, padding, reads_std_dev, width, length, paired, flank, expected_peaks, obs_peak_num]
                                     
                                     # Save to CSV
                                     df.to_csv(output_path, index=False)
-
-# Calculate true positive, true negative, false positive, and false negative peak regions
-def get_stats(real_peaks, detected_peaks, genome_size):
-	coors = defaultdict(lambda: defaultdict(str))
-
-	for peak in real_peaks:
-		coors[peak[0]]['real'] = 'start'
-		coors[peak[1]]['real'] = 'end'
-
-	for peak in detected_peaks:
-		coors[peak[0]]['dtct'] = 'start'
-		coors[peak[1]]['dtct'] = 'end'
-
-	sorted(coors.items(), key=lambda x: x[0])
-
-	poss = list(coors.keys())
-	poss.sort()
-
-	true_pos = 0
-	true_neg = 0
-	false_pos = 0
-	false_neg = 0
-
-	in_real_peak = False
-	in_detected_peak = False
-
-	previous = 1
-	previous_start = True
-	current_start = True
-	reverse = False
-	for i, pos in enumerate(poss):
-		if len(coors[pos]) > 1:
-			if coors[pos]['real'] == coors[pos]['dtct']:
-				if coors[pos]['real'] == 'start': current_start = True
-				else: current_start = False
-			else:
-				true_pos += 1
-				current_start = True
-				reverse = True
-		elif 'real' in coors[pos]:
-			if coors[pos]['real'] == 'start': current_start = True
-			else: current_start = False
-		else:
-			if coors[pos]['dtct'] == 'start': current_start = True
-			else: current_start = False
-		
-		if previous_start == current_start: buf = 0
-		elif previous_start and not current_start: buf = 1
-		else: buf = -1
-		
-		if not in_real_peak and not in_detected_peak:
-			true_neg += pos - previous + buf
-		if not in_real_peak and in_detected_peak:
-			false_pos += pos - previous + buf
-		if in_real_peak and not in_detected_peak:
-			false_neg += pos - previous + buf
-		if in_real_peak and in_detected_peak:
-			true_pos += pos - previous + buf
-		
-		previous_start = current_start
-		if reverse:
-			previous_start = not previous_start
-			reverse = False
-			
-		if len(coors[pos]) > 1:
-			in_detected_peak = not in_detected_peak
-			in_real_peak = not in_real_peak
-		elif 'real' in coors[pos]:
-			in_real_peak = not in_real_peak
-		else:
-			in_detected_peak = not in_detected_peak
-
-		previous = pos 
-
-	if poss[-1] < genome_size: true_neg += genome_size - poss[-1]
-	
-	return true_pos, true_neg, false_pos, false_neg
 
 def observed_peaks_histogram(dataframe, output_file):
     # Read in data 
