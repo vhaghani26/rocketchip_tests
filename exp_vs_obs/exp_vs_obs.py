@@ -490,6 +490,24 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     # Save to CSV
                                     df.to_csv(output_path, index=False)
 
+# Compute sensitivity, precision, and F1 scores
+def calculate_stats(dataframe):
+    # Read in data 
+    df = pd.read_csv(dataframe)
+    
+    # Calculate sensitivity [TP/(TP + FN)]
+    df['Sensitivity'] = df['True_Positives'] / (df['True_Positives'] + df['False_Negatives'])
+    
+    # Calculate precision [TP/(TP + FP)]
+    df['Precision'] = df['True_Positives'] / (df['True_Positives'] + df['False_Positives'])
+    
+    # Calculate F1 score [2TP/(2TP + FP + FN)]
+    df['F1_Score'] = (2 * df['True_Positives']) / (2 * df['True_Positives'] + df['False_Positives'] + df['False_Negatives'])
+    
+    # Save to CSV (overwrites previously saved file)
+    df.to_csv(dataframe, index=False)
+
+# Generate histogram
 def observed_peaks_histogram(dataframe, output_file):
     # Read in data 
     df = pd.read_csv(dataframe)
@@ -517,6 +535,7 @@ def observed_peaks_histogram(dataframe, output_file):
     plt.savefig(output_file)
     plt.close()
 
+# Linear regression to compare reads per peak vs. observed number of peaks
 def reads_per_peak_vs_obs_peaks(dataframe, output_file):
     # Read in data 
     df = pd.read_csv(dataframe)
@@ -555,7 +574,10 @@ def reads_per_peak_vs_obs_peaks(dataframe, output_file):
 #run_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Count peaks and calculate statistics based on peak calling
-count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
+#count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
+
+# Compute sensitivity, precision, and F1 scores
+calculate_stats(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
 
 # Generate histogram
 #observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
