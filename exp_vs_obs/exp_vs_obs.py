@@ -577,10 +577,10 @@ def reads_per_peak_vs_obs_peaks(dataframe, output_file):
 #count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
 
 # Compute sensitivity, precision, and F1 scores
-calculate_stats(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
+#calculate_stats(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
 
 # Generate histogram
-#observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
+observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
 
 # Linear regression to compare reads per peak vs. observed number of peaks
-#reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
+reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
