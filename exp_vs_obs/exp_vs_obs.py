@@ -560,6 +560,31 @@ def reads_per_peak_vs_obs_peaks(dataframe, output_file):
     plt.savefig(output_file)
     plt.close()
 
+# Linear regression to compare reads per peak vs. F1 scores
+def reads_per_peak_vs_F1_score(dataframe, output_file):
+    # Read in data 
+    df = pd.read_csv(dataframe)
+
+    # Perform linear regression
+    fit = np.polyfit(df['Reads_per_Peak'], df['F1_Score'], 1)
+    fit_fn = np.poly1d(fit)
+    
+    # Create a scatter plot
+    plt.scatter(df['Reads_per_Peak'], df['F1_Score'], color = 'blue', marker = 'o')
+    
+    # Add best-fit line
+    plt.plot(df['Reads_per_Peak'], fit_fn(df['Reads_per_Peak']), color='red') 
+    
+    # Add labels
+    plt.xlabel('Reads per Peak')
+    plt.ylabel('F1 Score')
+    plt.title('Read Coverage vs. F1 Score')
+    plt.grid(False)
+    
+    # Save figure
+    plt.savefig(output_file)
+    plt.close()
+    
 ####################
 ## Run Everything ##
 ####################
@@ -580,7 +605,10 @@ def reads_per_peak_vs_obs_peaks(dataframe, output_file):
 #calculate_stats(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
 
 # Generate histogram
-observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
+#observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
 
 # Linear regression to compare reads per peak vs. observed number of peaks
-reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
+#reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
+
+# Linear regression to compare reads per peak vs. F1 scores
+reads_per_peak_vs_F1_score(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_f1_score.pdf')
