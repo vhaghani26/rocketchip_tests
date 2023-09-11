@@ -36,8 +36,7 @@ peakcallers = ["macs3", "cisgenome", "genrich", "pepr"]
 deduplicators = ["samtools", "no_deduplication", "sambamba", "picard"]
 num_tests = 6
 
-# Create DataFrame for peak counting 
-df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Reads_per_Peak", "Padding", "Reads_STD_Dev", "Width", "Read_Length", "Paired", "Flank", "Expected_Peaks", "Observed_Peaks", "True_Positives", "True_Negatives", "False_Positives", "False_Negatives"])
+
 
 #########################
 ## Delineate Functions ##
@@ -264,6 +263,10 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                     for peakcaller in peakcallers:
                         for deduplicator in deduplicators:
                             for i in range(1, num_tests + 1):
+                                # Create DataFrame for peak counting 
+                                df = pd.DataFrame(columns=["Endedness", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Test_Dataset", "Control", "Synthetic_Genome_Path", "Synthetic_Forward_Read_1_Path", "Synthetic_Reverse_Read_1_Path", "Synthetic_Forward_Read_2_Path", "Synthetic_Reverse_Read_2_Path", "Reads_per_Peak", "Padding", "Reads_STD_Dev", "Width", "Read_Length", "Paired", "Flank", "Expected_Peaks", "Observed_Peaks", "True_Positives", "True_Negatives", "False_Positives", "False_Negatives"])
+                                
+                                # Handle illegal combinations 
                                 if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
                                     continue
                                 else:
@@ -486,14 +489,8 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     # Add test to dataframe 
                                     df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, reads_per_peak, padding, reads_std_dev, width, length, paired, flank, expected_peaks, obs_peak_num, true_positives, true_negatives, false_positives, false_negatives]
                                     
-                                    # Save to CSV
-                                    df.to_csv(output_path, index=False)
-                                    
                                 # Modify dataframe to include illegal combinations   
-                                if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):                             
-                                    # Read in data frame
-                                    df = pd.read_csv(output_path)
-                                    
+                                if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):                                                               
                                     # Assign variables
                                     genome_path = "NA"
                                     read_1_for_path = "NA"
@@ -517,21 +514,21 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     # Add null data for Cisgenome and Pepr to generate heatmap later
                                     df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, reads_per_peak, padding, reads_std_dev, width, length, paired, flank, expected_peaks, obs_peak_num, true_positives, true_negatives, false_positives, false_negatives]
 
+                                    # Save to CSV
+                                    df.to_csv(output_path, index=False)
+
 # Compute sensitivity, precision, and F1 scores
 def calculate_stats(dataframe):
     # Read in data 
     df = pd.read_csv(dataframe)
     
     # Calculate sensitivity [TP/(TP + FN)]
-    print('Calculating sensitivity...')
     df['Sensitivity'] = df['True_Positives'] / (df['True_Positives'] + df['False_Negatives'])
     
     # Calculate precision [TP/(TP + FP)]
-    print('Calculating precision...')
     df['Precision'] = df['True_Positives'] / (df['True_Positives'] + df['False_Positives'])
     
     # Calculate F1 score [2TP/(2TP + FP + FN)]
-    print('Calculating F1 scores...')
     df['F1_Score'] = (2 * df['True_Positives']) / (2 * df['True_Positives'] + df['False_Positives'] + df['False_Negatives'])
     
     # Fill NA values with "NA"
