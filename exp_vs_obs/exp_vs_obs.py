@@ -18,7 +18,6 @@ import subprocess
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
-import seaborn as sns
 
 ###########################
 ## Set Working Variables ##
@@ -489,6 +488,34 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                     
                                     # Save to CSV
                                     df.to_csv(output_path, index=False)
+                                    
+                                # Modify dataframe to include illegal combinations   
+                                if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):                             
+                                    # Read in data frame
+                                    df = pd.read_csv(output_path)
+                                    
+                                    # Assign variables
+                                    genome_path = "NA"
+                                    read_1_for_path = "NA"
+                                    read_1_rev_path = "NA"
+                                    read_2_for_path = "NA"
+                                    read_2_rev_path = "NA"
+                                    reads_per_peak = "NA"
+                                    padding = "NA"
+                                    reads_std_dev = "NA"
+                                    width = "NA"
+                                    length = "NA"
+                                    paired = "NA"
+                                    flank = "NA"
+                                    expected_peaks = "NA"
+                                    obs_peak_num = "NA"
+                                    true_positives = "NA"
+                                    true_negatives = "NA"
+                                    false_positives = "NA"
+                                    false_negatives = "NA"
+                                    
+                                    # Add null data for Cisgenome and Pepr to generate heatmap later
+                                    df.loc[len(df)] = [readtype, peaktype, aligner, peakcaller, deduplicator, i, control, genome_path, read_1_for_path, read_1_rev_path, read_2_for_path, read_2_rev_path, reads_per_peak, padding, reads_std_dev, width, length, paired, flank, expected_peaks, obs_peak_num, true_positives, true_negatives, false_positives, false_negatives]
 
 # Compute sensitivity, precision, and F1 scores
 def calculate_stats(dataframe):
@@ -496,13 +523,19 @@ def calculate_stats(dataframe):
     df = pd.read_csv(dataframe)
     
     # Calculate sensitivity [TP/(TP + FN)]
+    print('Calculating sensitivity...')
     df['Sensitivity'] = df['True_Positives'] / (df['True_Positives'] + df['False_Negatives'])
     
     # Calculate precision [TP/(TP + FP)]
+    print('Calculating precision...')
     df['Precision'] = df['True_Positives'] / (df['True_Positives'] + df['False_Positives'])
     
     # Calculate F1 score [2TP/(2TP + FP + FN)]
+    print('Calculating F1 scores...')
     df['F1_Score'] = (2 * df['True_Positives']) / (2 * df['True_Positives'] + df['False_Positives'] + df['False_Negatives'])
+    
+    # Fill NA values with "NA"
+    df = df.fillna("NA")
     
     # Save to CSV (overwrites previously saved file)
     df.to_csv(dataframe, index=False)
@@ -512,6 +545,9 @@ def observed_peaks_histogram(dataframe, output_file):
     # Read in data 
     df = pd.read_csv(dataframe)
 
+    # Drop rows with NA values in the 'Observed_Peaks' column
+    df = df.dropna(subset=['Observed_Peaks'])
+    
     # Find the maximum value of observed peaks in order to adjust visualization
     max_observed_peaks = df['Observed_Peaks'].max()
     print(f'{max_observed_peaks} was the highest observed peak number.')
@@ -539,6 +575,9 @@ def observed_peaks_histogram(dataframe, output_file):
 def reads_per_peak_vs_obs_peaks(dataframe, output_file):
     # Read in data 
     df = pd.read_csv(dataframe)
+    
+    # Drop rows with NA values in the 'Observed_Peaks' column
+    df = df.dropna(subset=['Observed_Peaks'])
 
     # Perform linear regression
     fit = np.polyfit(df['Reads_per_Peak'], df['Observed_Peaks'], 1)
@@ -564,6 +603,9 @@ def reads_per_peak_vs_obs_peaks(dataframe, output_file):
 def reads_per_peak_vs_F1_score(dataframe, output_file):
     # Read in data 
     df = pd.read_csv(dataframe)
+    
+    # Drop rows with NA values in the 'Reads_per_Peak' column
+    df = df.dropna(subset=['Reads_per_Peak'])
 
     # Perform linear regression
     fit = np.polyfit(df['Reads_per_Peak'], df['F1_Score'], 1)
@@ -599,16 +641,16 @@ def reads_per_peak_vs_F1_score(dataframe, output_file):
 #run_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Count peaks and calculate statistics based on peak calling
-#count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
+count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
 
 # Compute sensitivity, precision, and F1 scores
-#calculate_stats(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
+calculate_stats(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
 
 # Generate histogram
-#observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
+observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
 
 # Linear regression to compare reads per peak vs. observed number of peaks
-#reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
+reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
 
 # Linear regression to compare reads per peak vs. F1 scores
 reads_per_peak_vs_F1_score(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_f1_score.pdf')
