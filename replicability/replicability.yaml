@@ -1,0 +1,19 @@
+Author: {authors}
+Project: exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}
+Genome:
+    Name: genome
+    Location: '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/genome.fa'
+Reads:
+    Samples:
+        grp1: 
+            - '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_a'
+            - '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/exp_b'
+    Controls:
+        ctl1: 
+            - '{working_dir}/seq_data/{readtype}_{peaktype}/test_{i}/input'
+Readtype: {readtype}
+Peaktype: {peaktype}
+Aligner: {aligner}
+Deduplicator: {deduplicator}
+Peakcaller: {peakcaller}
+Threads: 1
