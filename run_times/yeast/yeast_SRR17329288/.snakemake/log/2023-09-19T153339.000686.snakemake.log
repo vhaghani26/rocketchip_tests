@@ -1,0 +1,50 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                      count    min threads    max threads
+---------------------  -------  -------------  -------------
+align_reads                  1              1              1
+all                          1              1              1
+bam_index                    1              1              1
+bam_to_bigwig                1              1              1
+call_peaks                   1              1              1
+download_genome              1              1              1
+download_samples             1              1              1
+fastqc_postprocessing        1              1              1
+fastqc_preprocessing         1              1              1
+index_genome                 1              1              1
+link_indexed_genome          1              1              1
+link_reads                   1              1              1
+markdup                      1              1              1
+process_genome               1              1              1
+sam_fixmate                  1              1              1
+sam_sort                     1              1              1
+sam_to_bam                   1              1              1
+sra_to_fastq                 1              1              1
+total                       18              1              1
+
+Select jobs to execute...
+
+[Tue Sep 19 15:33:45 2023]
+rule download_samples:
+    output: /share/korflab/home/viki/rocketchip_tests/run_times/yeast/yeast_SRR17329288/paired/SRR17329288/SRR17329288.sra
+    log: 00_logs/SRR17329288_download_data.log
+    jobid: 4
+    reason: Missing output files: /share/korflab/home/viki/rocketchip_tests/run_times/yeast/yeast_SRR17329288/paired/SRR17329288/SRR17329288.sra
+    wildcards: sample=SRR17329288
+    resources: tmpdir=/tmp
+
+[Tue Sep 19 15:33:45 2023]
+Error in rule download_samples:
+    jobid: 4
+    output: /share/korflab/home/viki/rocketchip_tests/run_times/yeast/yeast_SRR17329288/paired/SRR17329288/SRR17329288.sra
+    log: 00_logs/SRR17329288_download_data.log (check log file(s) for error details)
+    shell:
+        prefetch SRR17329288 -O '/share/korflab/home/viki/rocketchip_tests/run_times/yeast/yeast_SRR17329288/paired/' > '00_logs/SRR17329288_download_data.log'
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-09-19T153339.000686.snakemake.log
