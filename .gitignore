@@ -10,3 +10,6 @@ exp_vs_obs/seq_data/__pycache__/
 exp_vs_obs/project_files/
 exp_vs_obs/snakefiles/
 exp_vs_obs/.ipynb_checkpoints/
+.snakemake/
+*/.snakemake/
+run_times/yeast/yeast_SRR17329288

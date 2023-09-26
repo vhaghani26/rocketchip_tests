@@ -26,6 +26,10 @@ Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHI
 | SRR17329314 |       NA       | Yeast (sacCer3)      |    NA    |
 | SRR17329289 |       NA       | Yeast (sacCer3)      |    NA    |
 
+These experiments were run on an HPC with 64 CPUs and 250 GB of memory available. However, jobs were run without being parallelized (i.e. one job at a time). Additionally, genome copies were deleted between runs using the same genome to ensure that run time accounts for the full workflow.
+
+All `yaml` files are formatted for use, as data is downloaded from the NCBI SRA. The only thing that should be edited is the author name. The commands to be run for each test are documented below.
+
 ## Fruitfly Genome
 
 ## Human Genome
@@ -38,18 +42,20 @@ Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHI
 
 ## Yeast Genome 
 
-### `yeast_SRR17329288.yaml`
-
-Enter `yeast_SRR17329288/`. Because `yeast_SRR17329288.yaml` uses data from the NCBI SRA, the only thing that needs to be changed is the author name. Once you have edited the file, you can run the following:
+### SRR17329288
 
 ```
-rocketchip yeast_SRR17329288.yaml --output_file Snakefile
+python3 ../../rocketchip yeast_SRR17329288.yaml --output_file  yeast_SRR17329288 --data ..
 ```
 
 This will create a file called Snakefile. To run it, simply run:
 
 ```
-snakemake -j 1
+snakemake -j 1 -s yeast_SRR17329288
 ```
+
+### SRR17329289
+
+### SRR17329314
 
 ## Zebrafish Genome
