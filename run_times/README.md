@@ -40,17 +40,33 @@ All `yaml` files are formatted for use, as data is downloaded from the NCBI SRA.
 
 ## Worm Genome
 
+### SRR13125168
+
+```
+python3 ../../rocketchip worm_SRR13125170.yaml --output_file worm_SRR13125170 --data .
+snakemake -j 1 -s worm_SRR13125170
+```
+
+### SRR13125170
+
+```
+python3 ../../rocketchip worm_SRR13125170.yaml --output_file worm_SRR13125170 --data .
+snakemake -j 1 -s worm_SRR13125170
+```
+
+### SRR13125172
+
+```
+python3 ../../rocketchip worm_SRR13125172.yaml --output_file worm_SRR13125172 --data .
+snakemake -j 1 -s worm_SRR13125172
+```
+
 ## Yeast Genome 
 
 ### SRR17329288
 
 ```
-python3 ../../rocketchip yeast_SRR17329288.yaml --output_file  yeast_SRR17329288 --data .
-```
-
-This will create a file called Snakefile. To run it, simply run:
-
-```
+python3 ../../rocketchip yeast_SRR17329288.yaml --output_file yeast_SRR17329288 --data .
 snakemake -j 1 -s yeast_SRR17329288
 ```
 
@@ -58,11 +74,6 @@ snakemake -j 1 -s yeast_SRR17329288
 
 ```
 python3 ../../rocketchip yeast_SRR17329289.yaml --output_file  yeast_SRR17329289 --data .
-```
-
-This will create a file called Snakefile. To run it, simply run:
-
-```
 snakemake -j 1 -s yeast_SRR17329289
 ```
 
@@ -70,11 +81,6 @@ snakemake -j 1 -s yeast_SRR17329289
 
 ```
 python3 ../../rocketchip yeast_SRR17329314.yaml --output_file  yeast_SRR17329314 --data .
-```
-
-This will create a file called Snakefile. To run it, simply run:
-
-```
 snakemake -j 1 -s yeast_SRR17329314
 ```
 
