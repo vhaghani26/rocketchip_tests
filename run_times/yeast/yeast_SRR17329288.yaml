@@ -2,7 +2,7 @@ Author: Viktoria_Haghani
 Project: yeast_SRR17329288
 Genome:
     Name: sacCer3
-    Location: https://hgdownload.soe.ucsc.edu/goldenPath/sacCer3/bigZips/chromFa.tar.gz
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/sacCer3/bigZips/chromFa.tar.gz
 Reads:
     Samples:
         grp1: 

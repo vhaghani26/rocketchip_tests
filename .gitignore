@@ -13,3 +13,8 @@ exp_vs_obs/.ipynb_checkpoints/
 .snakemake/
 */.snakemake/
 run_times/yeast/yeast_SRR17329288
+run_times/yeast/00_logs/
+run_times/yeast/01_raw_data/
+run_times/yeast/02_fastqc_analysis/
+run_times/yeast/paired/
+run_times/yeast/yeast_SRR17329289

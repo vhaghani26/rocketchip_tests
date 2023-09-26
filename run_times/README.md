@@ -45,7 +45,7 @@ All `yaml` files are formatted for use, as data is downloaded from the NCBI SRA.
 ### SRR17329288
 
 ```
-python3 ../../rocketchip yeast_SRR17329288.yaml --output_file  yeast_SRR17329288 --data ..
+python3 ../../rocketchip yeast_SRR17329288.yaml --output_file  yeast_SRR17329288 --data .
 ```
 
 This will create a file called Snakefile. To run it, simply run:
@@ -56,6 +56,26 @@ snakemake -j 1 -s yeast_SRR17329288
 
 ### SRR17329289
 
+```
+python3 ../../rocketchip yeast_SRR17329289.yaml --output_file  yeast_SRR17329289 --data .
+```
+
+This will create a file called Snakefile. To run it, simply run:
+
+```
+snakemake -j 1 -s yeast_SRR17329289
+```
+
 ### SRR17329314
+
+```
+python3 ../../rocketchip yeast_SRR17329314.yaml --output_file  yeast_SRR17329314 --data .
+```
+
+This will create a file called Snakefile. To run it, simply run:
+
+```
+snakemake -j 1 -s yeast_SRR17329314
+```
 
 ## Zebrafish Genome
