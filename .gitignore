@@ -18,3 +18,9 @@ run_times/yeast/01_raw_data/
 run_times/yeast/02_fastqc_analysis/
 run_times/yeast/paired/
 run_times/yeast/yeast_SRR17329289
+run_times/worm/00_logs/
+run_times/worm/01_raw_data/
+run_times/worm/02_fastqc_analysis/
+run_times/worm/ce11/
+run_times/worm/paired/
+run_times/worm/worm_SRR13125168
