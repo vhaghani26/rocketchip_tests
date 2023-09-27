@@ -43,8 +43,8 @@ All `yaml` files are formatted for use, as data is downloaded from the NCBI SRA.
 ### SRR13125168
 
 ```
-python3 ../../rocketchip worm_SRR13125170.yaml --output_file worm_SRR13125170 --data .
-snakemake -j 1 -s worm_SRR13125170
+python3 ../../rocketchip worm_SRR13125168.yaml --output_file worm_SRR13125168 --data .
+snakemake -j 1 -s worm_SRR13125168
 ```
 
 ### SRR13125170
