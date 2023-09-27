@@ -676,13 +676,13 @@ def reads_per_peak_vs_F1_score(dataframe, output_file):
 ####################
 
 # Generate project_files
-#generate_project_files(authors = authors, working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+generate_project_files(authors = authors, working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Generate Snakefiles
-#generate_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+generate_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Run Snakefiles
-#run_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+run_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Count peaks and calculate statistics based on peak calling
 count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
@@ -691,10 +691,10 @@ count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = 
 calculate_stats(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
 
 # Generate histogram
-#observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
+observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
 
 # Linear regression to compare reads per peak vs. observed number of peaks
-#reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
+reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
 
 # Linear regression to compare reads per peak vs. F1 scores
-#reads_per_peak_vs_F1_score(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_f1_score.pdf')
+reads_per_peak_vs_F1_score(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_f1_score.pdf')
