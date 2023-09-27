@@ -357,124 +357,173 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                         os.chdir('06_macs3_peaks')
                                         if control == "with_control":
                                             if peaktype == "narrow":
-                                                # Determine peak locations
-                                                detected_peaks = []
-                                                with open('grp1_ctl1_peaks.narrowPeak', 'r') as file:
-                                                    # Read the file line by line
-                                                    for line in file:
-                                                        # Split the line into columns
-                                                        columns = line.strip().split('\t')
-                                                        # Access the values in the second and third columns
-                                                        peak_range = (int(columns[1]), int(columns[2]))
-                                                        detected_peaks.append(peak_range)
-                                                # Count peaks
-                                                obs_peak_num = len(detected_peaks)
-                                                # Calculate true positives, true negatives, false positives, and false negatives
-                                                true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                                if os.path.isfile('grp1_ctl1_peaks.narrowPeak'):
+                                                    # Determine peak locations
+                                                    detected_peaks = []
+                                                    with open('grp1_ctl1_peaks.narrowPeak', 'r') as file:
+                                                        # Read the file line by line
+                                                        for line in file:
+                                                            # Split the line into columns
+                                                            columns = line.strip().split('\t')
+                                                            # Access the values in the second and third columns
+                                                            peak_range = (int(columns[1]), int(columns[2]))
+                                                            detected_peaks.append(peak_range)
+                                                    # Count peaks
+                                                    obs_peak_num = len(detected_peaks)
+                                                    # Calculate true positives, true negatives, false positives, and false negatives
+                                                    true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                                else:
+                                                    obs_peak_num = 0
+                                                    true_positives = "NA"
+                                                    true_negatives = "NA"
+                                                    false_positives = "NA"
+                                                    false_negatives = "NA"
                                             elif peaktype == "broad":
-                                                # Determine peak locations
-                                                detected_peaks = []
-                                                with open('grp1_ctl1_peaks.broadPeak', 'r') as file:
-                                                    # Read the file line by line
-                                                    for line in file:
-                                                        # Split the line into columns
-                                                        columns = line.strip().split('\t')
-                                                        # Access the values in the second and third columns
-                                                        peak_range = (int(columns[1]), int(columns[2]))
-                                                        detected_peaks.append(peak_range)
-                                                # Count peaks
-                                                obs_peak_num = len(detected_peaks)
-                                                # Calculate true positives, true negatives, false positives, and false negatives
-                                                true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                                if os.path.isfile('grp1_ctl1_peaks.broadPeak'):
+                                                    # Determine peak locations
+                                                    detected_peaks = []
+                                                    with open('grp1_ctl1_peaks.broadPeak', 'r') as file:
+                                                        # Read the file line by line
+                                                        for line in file:
+                                                            # Split the line into columns
+                                                            columns = line.strip().split('\t')
+                                                            # Access the values in the second and third columns
+                                                            peak_range = (int(columns[1]), int(columns[2]))
+                                                            detected_peaks.append(peak_range)
+                                                    # Count peaks
+                                                    obs_peak_num = len(detected_peaks)
+                                                    # Calculate true positives, true negatives, false positives, and false negatives
+                                                    true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                                else:
+                                                    obs_peak_num = 0
+                                                    true_positives = "NA"
+                                                    true_negatives = "NA"
+                                                    false_positives = "NA"
+                                                    false_negatives = "NA"
                                         elif control == "no_control":
                                             if peaktype == "narrow":
-                                                # Determine peak locations
-                                                detected_peaks = []
-                                                with open('grp1_peaks.narrowPeak', 'r') as file:
-                                                    # Read the file line by line
-                                                    for line in file:
-                                                        # Split the line into columns
-                                                        columns = line.strip().split('\t')
-                                                        # Access the values in the second and third columns
-                                                        peak_range = (int(columns[1]), int(columns[2]))
-                                                        detected_peaks.append(peak_range)
-                                                # Count peaks
-                                                obs_peak_num = len(detected_peaks)
-                                                # Calculate true positives, true negatives, false positives, and false negatives
-                                                true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                                if os.path.isfile('grp1_peaks.narrowPeak'):
+                                                    # Determine peak locations
+                                                    detected_peaks = []
+                                                    with open('grp1_peaks.narrowPeak', 'r') as file:
+                                                        # Read the file line by line
+                                                        for line in file:
+                                                            # Split the line into columns
+                                                            columns = line.strip().split('\t')
+                                                            # Access the values in the second and third columns
+                                                            peak_range = (int(columns[1]), int(columns[2]))
+                                                            detected_peaks.append(peak_range)
+                                                    # Count peaks
+                                                    obs_peak_num = len(detected_peaks)
+                                                    # Calculate true positives, true negatives, false positives, and false negatives
+                                                    true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                                else:
+                                                    obs_peak_num = 0
+                                                    true_positives = "NA"
+                                                    true_negatives = "NA"
+                                                    false_positives = "NA"
+                                                    false_negatives = "NA"
                                             elif peaktype == "broad":
-                                                # Determine peak locations
-                                                detected_peaks = []
-                                                with open('grp1_peaks.broadPeak', 'r') as file:
-                                                    # Read the file line by line
-                                                    for line in file:
-                                                        # Split the line into columns
-                                                        columns = line.strip().split('\t')
-                                                        # Access the values in the second and third columns
-                                                        peak_range = (int(columns[1]), int(columns[2]))
-                                                        detected_peaks.append(peak_range)
-                                                # Count peaks
-                                                obs_peak_num = len(detected_peaks)
-                                                # Calculate true positives, true negatives, false positives, and false negatives
-                                                true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                                if os.path.isfile('grp1_peaks.broadPeak'):
+                                                    # Determine peak locations
+                                                    detected_peaks = []
+                                                    with open('grp1_peaks.broadPeak', 'r') as file:
+                                                        # Read the file line by line
+                                                        for line in file:
+                                                            # Split the line into columns
+                                                            columns = line.strip().split('\t')
+                                                            # Access the values in the second and third columns
+                                                            peak_range = (int(columns[1]), int(columns[2]))
+                                                            detected_peaks.append(peak_range)
+                                                    # Count peaks
+                                                    obs_peak_num = len(detected_peaks)
+                                                    # Calculate true positives, true negatives, false positives, and false negatives
+                                                    true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                                else:
+                                                    obs_peak_num = 0
+                                                    true_positives = "NA"
+                                                    true_negatives = "NA"
+                                                    false_positives = "NA"
+                                                    false_negatives = "NA"
                                         os.chdir('..')
                                     
                                     # Count peaks and determine peak locations for Cisgenome outputs
                                     elif peakcaller == "cisgenome":
                                         os.chdir('06_cisgenome_peaks')
-                                        # Determine peak locations
-                                        detected_peaks = []
-                                        # Open the file for reading
-                                        with open("grp1_ctl1_peak.cod", "r") as file:
-                                            # Skip the header line
-                                            next(file)
-                                            # Read the file line by line
-                                            for line in file:
-                                                # Split the line into columns
-                                                columns = line.strip().split("\t")
-                                                # Access the values in the third and fourth columns
-                                                peak_range = (int(columns[2]), int(columns[3]))
-                                                detected_peaks.append(peak_range)
-                                                
-                                        # Count peaks
-                                        obs_peak_num = len(detected_peaks)
-                                        # Calculate true positives, true negatives, false positives, and false negatives
-                                        true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                        if os.path.isfile('grp1_ctl1_peak.cod'):
+                                            # Determine peak locations
+                                            detected_peaks = []
+                                            # Open the file for reading
+                                            with open("grp1_ctl1_peak.cod", "r") as file:
+                                                # Skip the header line
+                                                next(file)
+                                                # Read the file line by line
+                                                for line in file:
+                                                    # Split the line into columns
+                                                    columns = line.strip().split("\t")
+                                                    # Access the values in the third and fourth columns
+                                                    peak_range = (int(columns[2]), int(columns[3]))
+                                                    detected_peaks.append(peak_range)
+                                                    
+                                            # Count peaks
+                                            obs_peak_num = len(detected_peaks)
+                                            # Calculate true positives, true negatives, false positives, and false negatives
+                                            true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                        else:
+                                            obs_peak_num = 0
+                                            true_positives = "NA"
+                                            true_negatives = "NA"
+                                            false_positives = "NA"
+                                            false_negatives = "NA"
                                         os.chdir('..')
 
                                     # Count peaks and determine peak locations for Genrich outputs
                                     elif peakcaller == "genrich":
                                         os.chdir('06_genrich_peaks')
                                         if control == "with_control":
-                                            # Determine peak locations
-                                            detected_peaks = []
-                                            with open('grp1_ctl1_peak.narrowPeak', 'r') as file:
-                                                # Read the file line by line
-                                                for line in file:
-                                                    # Split the line into columns
-                                                    columns = line.strip().split('\t')
-                                                    # Access the values in the second and third columns
-                                                    peak_range = (int(columns[1]), int(columns[2]))
-                                                    detected_peaks.append(peak_range)
-                                            # Count peaks
-                                            obs_peak_num = len(detected_peaks)
-                                            # Calculate true positives, true negatives, false positives, and false negatives
-                                            true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                            if os.path.isfile('grp1_ctl1_peak.narrowPeak'):
+                                                # Determine peak locations
+                                                detected_peaks = []
+                                                with open('grp1_ctl1_peak.narrowPeak', 'r') as file:
+                                                    # Read the file line by line
+                                                    for line in file:
+                                                        # Split the line into columns
+                                                        columns = line.strip().split('\t')
+                                                        # Access the values in the second and third columns
+                                                        peak_range = (int(columns[1]), int(columns[2]))
+                                                        detected_peaks.append(peak_range)
+                                                # Count peaks
+                                                obs_peak_num = len(detected_peaks)
+                                                # Calculate true positives, true negatives, false positives, and false negatives
+                                                true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                            else:
+                                                obs_peak_num = 0
+                                                true_positives = "NA"
+                                                true_negatives = "NA"
+                                                false_positives = "NA"
+                                                false_negatives = "NA"
                                         elif control == "no_control":
-                                            # Determine peak locations
-                                            detected_peaks = []
-                                            with open('grp1_peak.narrowPeak', 'r') as file:
-                                                # Read the file line by line
-                                                for line in file:
-                                                    # Split the line into columns
-                                                    columns = line.strip().split('\t')
-                                                    # Access the values in the second and third columns
-                                                    peak_range = (int(columns[1]), int(columns[2]))
-                                                    detected_peaks.append(peak_range)
-                                            # Count peaks
-                                            obs_peak_num = len(detected_peaks)
-                                            # Calculate true positives, true negatives, false positives, and false negatives
-                                            true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                            if os.path.isfile('grp1_peak.narrowPeak'):
+                                                # Determine peak locations
+                                                detected_peaks = []
+                                                with open('grp1_peak.narrowPeak', 'r') as file:
+                                                    # Read the file line by line
+                                                    for line in file:
+                                                        # Split the line into columns
+                                                        columns = line.strip().split('\t')
+                                                        # Access the values in the second and third columns
+                                                        peak_range = (int(columns[1]), int(columns[2]))
+                                                        detected_peaks.append(peak_range)
+                                                # Count peaks
+                                                obs_peak_num = len(detected_peaks)
+                                                # Calculate true positives, true negatives, false positives, and false negatives
+                                                true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
+                                            else:
+                                                obs_peak_num = 0
+                                                true_positives = "NA"
+                                                true_negatives = "NA"
+                                                false_positives = "NA"
+                                                false_negatives = "NA"
                                         os.chdir('..')
                                     
                                     # Count peaks and determine peak locations for PePr outputs
@@ -497,6 +546,10 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
                                             true_positives, true_negatives, false_positives, false_negatives = get_stats(real_peaks = real_peaks, detected_peaks = detected_peaks, genome_size = genome_size)
                                         else:
                                             obs_peak_num = 0
+                                            true_positives = "NA"
+                                            true_negatives = "NA"
+                                            false_positives = "NA"
+                                            false_negatives = "NA"
                                         os.chdir('..')
                                     
                                     # View peak number
@@ -638,10 +691,10 @@ count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = 
 calculate_stats(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
 
 # Generate histogram
-observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
+#observed_peaks_histogram(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/total_distribution_of_observed_peaks.pdf')
 
 # Linear regression to compare reads per peak vs. observed number of peaks
-reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
+#reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_observed_peaks.pdf')
 
 # Linear regression to compare reads per peak vs. F1 scores
-reads_per_peak_vs_F1_score(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_f1_score.pdf')
+#reads_per_peak_vs_F1_score(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_f1_score.pdf')
