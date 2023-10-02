@@ -1,0 +1,16 @@
+Author: Viktoria_Haghani
+Project: human_DRR345782
+Genome:
+    Name: hg19
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz
+Reads:
+    Samples:
+        grp1: 
+            - DRR345782
+    Controls:
+Readtype: paired
+Peaktype: narrow
+Aligner: bwa_mem
+Deduplicator: samtools
+Peakcaller: macs3
+Threads: 1

@@ -1,0 +1,16 @@
+Author: Viktoria_Haghani
+Project: mouse_SRR17887304
+Genome:
+    Name: mm10
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/chromFa.tar.gz
+Reads:
+    Samples:
+        grp1: 
+            - SRR17887304
+    Controls:
+Readtype: paired
+Peaktype: narrow
+Aligner: bwa_mem
+Deduplicator: samtools
+Peakcaller: macs3
+Threads: 1

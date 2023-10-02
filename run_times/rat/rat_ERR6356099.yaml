@@ -1,0 +1,16 @@
+Author: Viktoria_Haghani
+Project: rat_ERR6356099
+Genome:
+    Name: rn6
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/rn6/bigZips/chromFa.tar.gz
+Reads:
+    Samples:
+        grp1: 
+            - ERR6356099
+    Controls:
+Readtype: paired
+Peaktype: narrow
+Aligner: bwa_mem
+Deduplicator: samtools
+Peakcaller: macs3
+Threads: 1

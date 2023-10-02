@@ -1,0 +1,16 @@
+Author: Viktoria_Haghani
+Project: fruitfly_SRR16638474
+Genome:
+    Name: dm6
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/dm6/bigZips/chromFa.tar.gz
+Reads:
+    Samples:
+        grp1: 
+            - SRR16638474
+    Controls:
+Readtype: paired
+Peaktype: narrow
+Aligner: bwa_mem
+Deduplicator: samtools
+Peakcaller: macs3
+Threads: 1

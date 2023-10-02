@@ -1,0 +1,16 @@
+Author: Viktoria_Haghani
+Project: zebrafish_SRR15046104
+Genome:
+    Name: danRer11
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/danRer11/bigZips/chromFa.tar.gz
+Reads:
+    Samples:
+        grp1: 
+            - SRR15046104
+    Controls:
+Readtype: paired
+Peaktype: narrow
+Aligner: bwa_mem
+Deduplicator: samtools
+Peakcaller: macs3
+Threads: 1
