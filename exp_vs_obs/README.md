@@ -2,9 +2,10 @@
 
 ## Running the Experiment
 
-First, set up the sequencing data. To do so, enter `seq_data/`. Run the following to unzip `seqdata.tar.gz`:
+First, set up the sequencing data. To do so, enter `seq_data/`. Run the following to download and unzip `seqdata.tar.gz`:
 
 ```
+wget https://data.cyverse.org/dav-anon/iplant/home/vhaghani26/Rocketchip_Data/seqdata.tar.gz
 tar -xvzf seqdata.tar.gz
 ```
 
