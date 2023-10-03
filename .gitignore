@@ -13,6 +13,7 @@ exp_vs_obs/project_files/
 exp_vs_obs/snakefiles/
 exp_vs_obs/.ipynb_checkpoints/
 exp_vs_obs/seq_data/seqdata/
+exp_vs_obs/seq_data/seqdata.tar.gz
 run_times/yeast/yeast_SRR17329288
 run_times/yeast/00_logs/
 run_times/yeast/01_raw_data/
@@ -45,3 +46,8 @@ run_times/yeast/yeast_SRR17329314
 run_times/zebrafish/00_logs/
 run_times/zebrafish/paired/
 run_times/zebrafish/zebrafish_SRR15046104
+run_times/human/hg19/
+run_times/worm/04_bam_files/
+run_times/worm/05_bigwig_files/
+run_times/yeast/04_bam_files/
+run_times/yeast/05_bigwig_files/
