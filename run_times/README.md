@@ -7,7 +7,7 @@ Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHI
 | SRR15243009 | (running)       | Fruitfly (dm6)       |    NA     |    NA     |      NA     |
 | SRR16638474 | NA       | Fruitfly (dm6)       |    NA     |    NA     |      NA     |
 | SRR16638475 | NA       | Fruitfly (dm6)       |    NA     |    NA     |      NA     |
-| DRR345782   | (running)  | Human (hg19)         |    NA     |    NA     |      NA     |
+| DRR345782   | 22649733 | Human (hg19)         | 691m6.497s | 626m3.619s | 60m52.242s |
 | SRR17409984 | NA       | Human (hg19)         |    NA     |    NA     |      NA     |
 | SRR17514595 | NA       | Human (hg19)         |    NA     |    NA     |      NA     | 
 | SRR14407118 | (running) | Mouse (mm10)         |    NA     |    NA     |      NA     |
@@ -17,10 +17,10 @@ Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHI
 | ERR6356099  | NA       | Rat (rn6)            |    NA     |    NA     |      NA     |
 | ERR6356102  | NA       | Rat (rn6)            |    NA     |    NA     |      NA     |
 | SRR13125168 | 12569340 | Worm (ce11)          | 182m30.046s | 183m30.985s | 2m35.470s |
-| SRR13125170 | 11144851 | Worm (ce11)          |    NA     |    NA     |      NA     |
+| SRR13125170 | 11144851 | Worm (ce11)          | 181m52.287s | 176m21.777s | 2m23.179s |
 | SRR13125172 | NA       | Worm (ce11)          |    NA     |    NA     |      NA     |
 | SRR17329288 | 76503112 | Yeast (sacCer3)      | 164m58.914s | 169m55.851s | 3m8.378s |
-| SRR17329289 |       NA       | Yeast (sacCer3)      |    NA     |    NA     |      NA     |
+| SRR17329289 |       NA       | Yeast (sacCer3)      | 171m58.171s | 167m32.165s | 3m21.257s |
 | SRR17329314 | 26073747 | Yeast (sacCer3)      | 117m8.917s | 120m59.169s | 1m55.124s |
 | SRR15046104 | (running) | Zebrafish (danRer11) |    NA     |    NA     |      NA     |
 | SRR15509781 | NA       | Zebrafish (danRer11) |    NA     |    NA     |      NA     |
