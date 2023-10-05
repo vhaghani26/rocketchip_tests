@@ -20,7 +20,7 @@ Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHI
 | SRR13125170 | 11144851 | Worm (ce11)          | 181m52.287s | 176m21.777s | 2m23.179s |
 | SRR13125172 | NA       | Worm (ce11)          |    NA     |    NA     |      NA     |
 | SRR17329288 | 76503112 | Yeast (sacCer3)      | 164m58.914s | 169m55.851s | 3m8.378s |
-| SRR17329289 |       NA       | Yeast (sacCer3)      | 171m58.171s | 167m32.165s | 3m21.257s |
+| SRR17329289 | 74716042 | Yeast (sacCer3)      | 171m58.171s | 167m32.165s | 3m21.257s |
 | SRR17329314 | 26073747 | Yeast (sacCer3)      | 117m8.917s | 120m59.169s | 1m55.124s |
 | SRR15046104 | NA | Zebrafish (danRer11) |    NA     |    NA     |      NA     |
 | SRR15509781 | NA       | Zebrafish (danRer11) |    NA     |    NA     |      NA     |
