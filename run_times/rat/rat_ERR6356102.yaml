@@ -2,7 +2,7 @@ Author: Viktoria_Haghani
 Project: rat_ERR6356102
 Genome:
     Name: rn6
-    Location: https://hgdownload.cse.ucsc.edu/goldenPath/rn6/bigZips/chromFa.tar.gz
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/rn6/bigZips/rn6.fa.gz
 Reads:
     Samples:
         grp1: 

@@ -2,7 +2,7 @@ Author: Viktoria_Haghani
 Project: fruitfly_SRR16638474
 Genome:
     Name: dm6
-    Location: https://hgdownload.cse.ucsc.edu/goldenPath/dm6/bigZips/chromFa.tar.gz
+    Location: https://hgdownload.soe.ucsc.edu/goldenPath/dm6/bigZips/dm6.fa.gz
 Reads:
     Samples:
         grp1: 

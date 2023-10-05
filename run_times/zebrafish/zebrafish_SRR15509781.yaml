@@ -2,7 +2,7 @@ Author: Viktoria_Haghani
 Project: zebrafish_SRR15509781
 Genome:
     Name: danRer11
-    Location: https://hgdownload.cse.ucsc.edu/goldenPath/danRer11/bigZips/chromFa.tar.gz
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/danRer11/bigZips/danRer11.fa.gz
 Reads:
     Samples:
         grp1: 
