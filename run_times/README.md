@@ -5,7 +5,7 @@ Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHI
 | SRA ID      | Raw Read Count | Genome               | Real Time (s) | User Time (s) | System Time (s) |
 | :---------: | :------------: | :------------------: | :-----------: | :-----------: | :-------------: |
 | SRR15243009 | 13660923       | Fruitfly (dm6)       | 185m32.124s   | 185m23.124s   | 3m7.857s        |
-| SRR16638474 | NA             | Fruitfly (dm6)       |    NA         |    NA         |      NA         |
+| SRR16638474 | 3329820        | Fruitfly (dm6)       | 58m25.030s    | 57m48.401s    | 1m3.306s        |
 | SRR16638475 | NA             | Fruitfly (dm6)       |    NA         |    NA         |      NA         |
 | DRR345782   | 22649733       | Human (hg19)         | 691m6.497s    | 626m3.619s    | 60m52.242s      |
 | SRR17409984 | 32055273       | Human (hg19)         | 727m40.745s   | 679m43.001s   | 56m15.537s      |
