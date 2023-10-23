@@ -9,3 +9,9 @@ In order to prove that Rocketchip is capable of replicating experimental results
 |SRR2119602 | MeCP2_ChIP_WT_rep2 |       NA        |       NA        |       NA        |
 |SRR2119603 | Input_WT_rep1      |       NA        |       NA        |       NA        |
 |SRR2119604 | Input_WT_rep2      |       NA        |       NA        |       NA        |
+
+
+
+Rewrite later, just documenting for now:
+* Ran on mm9 originally
+* Replicates combined
