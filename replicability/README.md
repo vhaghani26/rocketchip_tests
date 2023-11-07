@@ -1,5 +1,16 @@
 # Replicability 
-In order to prove that Rocketchip is capable of replicating experimental results, we are running ChIP-seq data from the study [Sequence features accurately predict genome-wide MeCP2 binding in vivo](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4820824/) by Gong et al. through Rocketchip using BWA-MEM, Samtools, and MACS3.
+In order to prove that Rocketchip is capable of replicating experimental results, we are running ChIP-seq data from the study ["Sequence features accurately predict genome-wide MeCP2 binding in vivo"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4820824/) by Gong et al. through Rocketchip using BWA-MEM, Samtools, and MACS3.
+
+## Instructions
+
+Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHIP_DATA` or add them onto the ends of the commands as arguments (as seen below). Also ensure that you are in the activated `rocketchip` Conda environment. I ran the following to conduct the analysis:
+
+```
+rocketchip replicability.yaml --output_file replicability --data .
+snakemake -j 4 -s replicability
+```
+
+The `narrowPeak` file was inspected in order to count the number of peaks each analysis yielded.
 
 ## Results
 
