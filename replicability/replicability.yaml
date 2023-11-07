@@ -14,7 +14,7 @@ Reads:
             - SRR2119604
 Readtype: single
 Peaktype: narrow
-Aligner: bwa_mem
+Aligner: bowtie2
 Deduplicator: samtools
 Peakcaller: macs3
 Threads: 1
