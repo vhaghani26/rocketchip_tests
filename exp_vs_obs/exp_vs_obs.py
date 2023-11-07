@@ -684,6 +684,7 @@ generate_snakefiles(working_dir = working_dir, controltypes = controltypes, read
 # Run Snakefiles
 run_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
+'''
 # Count peaks and calculate statistics based on peak calling
 count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = 'tables_and_figures/expected_vs_observed_peaks_master.csv')
 
@@ -698,3 +699,4 @@ reads_per_peak_vs_obs_peaks(dataframe = 'tables_and_figures/expected_vs_observed
 
 # Linear regression to compare reads per peak vs. F1 scores
 reads_per_peak_vs_F1_score(dataframe = 'tables_and_figures/expected_vs_observed_peaks_master.csv', output_file = 'tables_and_figures/reads_per_peak_vs_f1_score.pdf')
+'''
