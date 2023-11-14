@@ -53,3 +53,7 @@ run_times/rat/00_logs/
 run_times/rat/paired/
 run_times/zebrafish/00_logs/
 run_times/zebrafish/paired/
+replicability/0*
+replicability/mm9/
+replicability/replicability
+replicability/single/
