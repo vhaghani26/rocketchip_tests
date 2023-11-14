@@ -41,4 +41,6 @@ snakemake -j 4 -s cut_and_run
 | SRR14870797  | CUT&Tag  | 24hpf_H2AZ_Rep3        | 23,810,168   | 22,288,633    | 93.61%                             |                         |
 
 
+**The original study did CUT&RUN and CUT&Tag analysis differently; note differences here to reflect analysis run**
+
 The original study uses Bowtie2 for alignment, Picard for deduplication, and MACS2 (the earlier version of MACS3) for peak-calling. This combination was employed in Rocketchip, with the primary difference being that trimming was not performed with Rocketchip, whereas the original study conducted trimming. Furthermore, there were some differences in command line arguments, as Rocketchip was employed using the preset parameters. It is important to reiterate that the purpose of this experiment is not to reproduce identical results, but rather to show that Rocketchip can be applied to CUT&Tag and CUT&RUN data successfully.
