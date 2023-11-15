@@ -1,0 +1,22 @@
+Author: Viktoria_Haghani
+Project: cut_and_tag
+Genome: 
+    Name: danRer11
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/danRer11/bigZips/danRer11.fa.gz
+Reads:
+    Samples:
+        grp1: 
+            - SRR14870792
+            - SRR14870793
+            - SRR14870794
+        grp2:
+            - SRR14870795
+            - SRR14870796
+            - SRR14870797
+    Controls:
+Readtype: paired
+Peaktype: broad
+Aligner: bowtie2
+Deduplicator: picard
+Peakcaller: macs3
+Threads: 1
