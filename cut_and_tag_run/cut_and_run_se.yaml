@@ -1,0 +1,23 @@
+Author: Viktoria_Haghani
+Project: cut_and_run
+Genome: 
+    Name: danRer11
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/danRer11/bigZips/danRer11.fa.gz
+Reads:
+    Samples:
+        grp1: 
+            - SRR14850825
+            - SRR14850826
+        grp2:
+            - SRR14850827
+            - SRR14850828
+        grp3:
+            - SRR14850829
+            - SRR14850830
+    Controls:
+Readtype: single
+Peaktype: broad
+Aligner: bowtie2
+Deduplicator: samtools
+Peakcaller: macs3
+Threads: 1
