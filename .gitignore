@@ -57,3 +57,14 @@ replicability/0*
 replicability/mm9/
 replicability/replicability
 replicability/single/
+cut_and_tag_run/00_logs/
+cut_and_tag_run/01_raw_data/
+cut_and_tag_run/02_fastqc_analysis/
+cut_and_tag_run/03_sam_files/
+cut_and_tag_run/04_bam_files/
+cut_and_tag_run/05_bigwig_files/
+cut_and_tag_run/06_macs3_peaks/
+cut_and_tag_run/cut_and_tag
+cut_and_tag_run/danRer11/
+cut_and_tag_run/paired/
+cut_and_tag_run/single/
