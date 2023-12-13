@@ -134,7 +134,9 @@ def generate_snakefiles(working_dir, controltypes, readtypes, peaktypes, aligner
                     for peakcaller in peakcallers:
                         for deduplicator in deduplicators:
                             for i in range(1, num_tests + 1):
-                                if control == "with_control":
+                                if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
+                                    continue
+                                else:
                                     # Make the directory structure if it does not already exist
                                     snakefile_dir = f'{working_dir}/snakefiles/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}'
                                     if not os.path.exists(snakefile_dir):
