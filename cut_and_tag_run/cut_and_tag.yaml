@@ -17,6 +17,6 @@ Reads:
 Readtype: paired
 Peaktype: broad
 Aligner: bowtie2
-Deduplicator: picard
+Deduplicator: samtools
 Peakcaller: macs3
 Threads: 1
