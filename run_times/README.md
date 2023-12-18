@@ -2,6 +2,8 @@
 
 Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHIP_DATA` or add them onto the ends of the commands as arguments. Also ensure that you are in the activated `rocketchip` Conda environment. 
 
+Old times:
+
 | SRA ID      | Raw Read Count | Genome               | Real Time     | User Time     | System Time     |
 | :---------: | :------------: | :------------------: | :-----------: | :-----------: | :-------------: |
 | SRR15243009 | 13660923       | Fruitfly (dm6)       | 185m32.124s   | 185m23.124s   | 3m7.857s        |
@@ -25,6 +27,32 @@ Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHI
 | SRR15046104 | 19749132       | Zebrafish (danRer11) | 578m16.499s   | 552m41.822s   | 29m36.365s      |
 | SRR15509781 | 27448764       | Zebrafish (danRer11) | 1173m58.839s  | 1105m14.202s  | 77m44.917s      |
 | SRR15509782 | 22765779       | Zebrafish (danRer11) | 961m46.608s   | 905m49.688s   | 63m34.837s      |
+
+New times with update:
+
+| SRA ID      | Raw Read Count | Genome               | Real Time     | User Time     | System Time     |
+| :---------: | :------------: | :------------------: | :-----------: | :-----------: | :-------------: |
+| SRR15243009 | 13660923       | Fruitfly (dm6)       |               |               |                 |
+| SRR16638474 | 3329820        | Fruitfly (dm6)       |               |               |                 |
+| SRR16638475 | 2880763        | Fruitfly (dm6)       |               |               |                 |
+| DRR345782   | 22649733       | Human (hg38)         |               |               |                 |
+| SRR17409984 | 32055273       | Human (hg38)         |               |               |                 |
+| SRR17514595 | 19332910       | Human (hg38)         |               |               |                 | 
+| SRR14407118 | 102208451      | Mouse (mm10)         |               |               |                 |
+| SRR17887304 | 20180276       | Mouse (mm10)         |               |               |                 |
+| SRR26041601 | 3914984        | Mouse (mm10)         |               |               |                 |
+| ERR6356096  | 25140500       | Rat (rn6)            |               |               |                 |
+| ERR6356099  | 25802282       | Rat (rn6)            |               |               |                 |
+| ERR6356102  | 35225234       | Rat (rn6)            |               |               |                 |
+| SRR13125168 | 12569340       | Worm (ce11)          |               |               |                 |
+| SRR13125170 | 11144851       | Worm (ce11)          |               |               |                 |
+| SRR13125172 | 12265487       | Worm (ce11)          |               |               |                 |
+| SRR17329288 | 76503112       | Yeast (sacCer3)      |               |               |                 |
+| SRR17329289 | 74716042       | Yeast (sacCer3)      |               |               |                 |
+| SRR17329314 | 26073747       | Yeast (sacCer3)      |               |               |                 |
+| SRR15046104 | 19749132       | Zebrafish (danRer11) |               |               |                 |
+| SRR15509781 | 27448764       | Zebrafish (danRer11) |               |               |                 |
+| SRR15509782 | 22765779       | Zebrafish (danRer11) |               |               |                 |
 
 These experiments were run on an HPC with 64 CPUs and 250 GB of memory available. However, jobs were run without being parallelized (i.e. one job at a time with one thread). Additionally, genome copies were deleted between runs using the same genome to ensure that run time accounts for the full workflow. All data selected was run for narrow-peak calling using paired-end data. The software used was BWA-MEM for alignment, Samtools for deduplication, and MACS3 for peak-calling. 
 
