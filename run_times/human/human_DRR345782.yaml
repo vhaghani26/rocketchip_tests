@@ -1,8 +1,8 @@
 Author: Viktoria_Haghani
 Project: human_DRR345782
 Genome:
-    Name: hg19
-    Location: https://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz
+    Name: hg38
+    Location: https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz
 Reads:
     Samples:
         grp1: 
