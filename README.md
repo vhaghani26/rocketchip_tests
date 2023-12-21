@@ -1,6 +1,6 @@
 # Rocketchip Tests
 
-This repository contains the project yaml files required to run the different experiments outlined in the original Rocketchip manuscript. It contains explicit instructions and should be run in the directories as they are organized above. 
+This repository contains the project yaml files required to run the different experiments outlined in the original Rocketchip manuscript. Each subdirectory contains explicit instructions and should be run in the directories as they are organized here. 
 
 In order to replicate these tests, please install and set up [Rocketchip](https://github.com/vhaghani26/rocketchip) first.
 
