@@ -2,34 +2,6 @@
 
 Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHIP_DATA` or add them onto the ends of the commands as arguments. Also ensure that you are in the activated `rocketchip` Conda environment. 
 
-Old times:
-
-| SRA ID      | Raw Read Count | Genome               | Real Time     | User Time     | System Time     |
-| :---------: | :------------: | :------------------: | :-----------: | :-----------: | :-------------: |
-| SRR15243009 | 13660923       | Fruitfly (dm6)       | 185m32.124s   | 185m23.124s   | 3m7.857s        |
-| SRR16638474 | 3329820        | Fruitfly (dm6)       | 58m25.030s    | 57m48.401s    | 1m3.306s        |
-| SRR16638475 | 2880763        | Fruitfly (dm6)       | 50m40.211s    | 50m42.542s    | 0m55.077s       |
-| DRR345782   | 22649733       | Human (hg19)         | 691m6.497s    | 626m3.619s    | 60m52.242s      |
-| SRR17409984 | 32055273       | Human (hg19)         | 727m40.745s   | 679m43.001s   | 56m15.537s      |
-| SRR17514595 | 19332910       | Human (hg19)         | 1365m12.500s  | 1285m34.374s  | 85m52.609s      | 
-| SRR14407118 | 102208451      | Mouse (mm10)         | 2696m52.460s  | 2516m40.639s  | 189m27.576s     |
-| SRR17887304 | 20180276       | Mouse (mm10)         | 1278m25.835s  | 1186m40.658s  | 97m49.033s      |
-| SRR26041601 | 3914984        | Mouse (mm10)         | 160m33.715s   | 152m21.957s   | 9m14.485s       |
-| ERR6356096  | 25140500       | Rat (rn6)            | 1182m1.703s   | 1110m26.686s  | 78m12.216s      |
-| ERR6356099  | 25802282       | Rat (rn6)            | 1257m24.977s  | 1152m49.616s  | 112m10.437s     |
-| ERR6356102  | 35225234       | Rat (rn6)            | 1776m46.631s  | 1645m44.616s  | 141m31.101s     |
-| SRR13125168 | 12569340       | Worm (ce11)          | 182m30.046s   | 183m30.985s   | 2m35.470s       |
-| SRR13125170 | 11144851       | Worm (ce11)          | 181m52.287s   | 176m21.777s   | 2m23.179s       |
-| SRR13125172 | 12265487       | Worm (ce11)          | 186m28.441s   | 186m51.380s   | 2m40.977s       |
-| SRR17329288 | 76503112       | Yeast (sacCer3)      | 164m58.914s   | 169m55.851s   | 3m8.378s        |
-| SRR17329289 | 74716042       | Yeast (sacCer3)      | 171m58.171s   | 167m32.165s   | 3m21.257s       |
-| SRR17329314 | 26073747       | Yeast (sacCer3)      | 117m8.917s    | 120m59.169s   | 1m55.124s       |
-| SRR15046104 | 19749132       | Zebrafish (danRer11) | 578m16.499s   | 552m41.822s   | 29m36.365s      |
-| SRR15509781 | 27448764       | Zebrafish (danRer11) | 1173m58.839s  | 1105m14.202s  | 77m44.917s      |
-| SRR15509782 | 22765779       | Zebrafish (danRer11) | 961m46.608s   | 905m49.688s   | 63m34.837s      |
-
-New times with update:
-
 | SRA ID      | Raw Read Count | Genome               | Real Time     | User Time     | System Time     |
 | :---------: | :------------: | :------------------: | :-----------: | :-----------: | :-------------: |
 | SRR15243009 | 13660923       | Fruitfly (dm6)       | 134m27.029s   | 87m27.505s    | 1m55.765s       |
