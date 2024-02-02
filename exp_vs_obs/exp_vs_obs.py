@@ -144,7 +144,7 @@ def generate_snakefiles(working_dir, controltypes, readtypes, peaktypes, aligner
                                     
                                     # Create the snakefiles using Rocketchip
                                     print(f"Generating {snakefile_dir}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}")
-                                    os.system(f'python3 ../rocketchip {working_dir}/project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml --data {working_dir}/seq_data/{readtype}_{peaktype}/test_{i} --src {working_dir}/.. --output_file {snakefile_dir}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
+                                    os.system(f'rocketchip {working_dir}/project_files/{control}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}.yaml --data {working_dir}/seq_data/{readtype}_{peaktype}/test_{i} --output_file {snakefile_dir}/exp_vs_obs_{readtype}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test_{i}_{control}')
                                     
                                     # MACS3 has an issue with small read files requiring the --nomodel flag, so I will manually add it for the single-end data that are having problems with peak-calling
                                     if readtype == "single" and peakcaller == "macs3":
