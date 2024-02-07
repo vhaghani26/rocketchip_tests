@@ -60,3 +60,5 @@ for file in *align*; do
     echo -e "\n"
 done
 ```
+
+Results were visualized using the [cut_and_tag_run.ipynb](https://github.com/vhaghani26/rocketchip_tests/blob/main/cut_and_tag_run/cut_and_tag_run.ipynb).

@@ -1,6 +1,6 @@
 # Replicability 
 
-In order to prove that Rocketchip is capable of replicating experimental results, we are running ChIP-seq data from the study ["Sequence features accurately predict genome-wide MeCP2 binding in vivo"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4820824/) by Rube et al. through Rocketchip using Bowtie2, Samtools, and MACS3.
+In order to prove that Rocketchip is capable of replicating experimental results, we ran ChIP-seq data from the study ["Sequence features accurately predict genome-wide MeCP2 binding in vivo"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4820824/) by Rube et al. through Rocketchip using Bowtie2, Samtools, and MACS3.
 
 ## Instructions
 

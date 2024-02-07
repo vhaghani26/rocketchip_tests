@@ -198,3 +198,7 @@ time snakemake -j 1 -s zebrafish_SRR15509781
 rocketchip zebrafish_SRR15509782.yaml --output_file  zebrafish_SRR15509782 --data .
 time snakemake -j 1 -s zebrafish_SRR15509782
 ```
+
+## Results
+
+Results were visualized via [visualize_run_times.ipynb](https://github.com/vhaghani26/rocketchip_tests/blob/main/run_times/visualize_run_times.ipynb).
