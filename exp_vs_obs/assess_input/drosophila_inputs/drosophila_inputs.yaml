@@ -27,10 +27,6 @@ Reads:
         grp8:
             - SRR9624503
             - SRR9624504
-        grp9:
-            - SRR9624512
-        grp10:
-            - SRR9624516
     Controls:
         ctl1: 
             - SRR9624455
@@ -54,10 +50,6 @@ Reads:
         ctl8:
             - SRR9624503
             - SRR9624504
-        ctl9:
-            - SRR9624512
-        ctl10:
-            - SRR9624516
 Readtype: single
 Peaktype: narrow
 Aligner: bwa_mem
