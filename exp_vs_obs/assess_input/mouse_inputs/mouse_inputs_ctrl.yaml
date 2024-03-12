@@ -1,0 +1,20 @@
+Author: Viktoria_Haghani
+Project: mouse_inputs
+Genome: 
+    Name: mm10
+    Location: https://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/chromFa.tar.gz
+Reads:
+    Samples:
+        grp1: 
+            - SRR2119603
+            - SRR2119604
+    Controls:
+        ctl1: 
+            - SRR2119603
+            - SRR2119604
+Readtype: single
+Peaktype: narrow
+Aligner: bwa_mem
+Deduplicator: samtools
+Peakcaller: macs3
+Threads: 6
