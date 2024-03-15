@@ -140,26 +140,25 @@ def generate_project_files(working_dir, controltypes, projects, peaktypes, align
                                     
                                     # Rube project files
                                     if project == "Rube":
-                                    
-                                    proj_file_info = textwrap.dedent(f"""
-                                    Author: {authors}
-                                    Project: Rube_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}
-                                    Genome:
-                                        Name: mm9
-                                        Location: '{working_dir}/mm9/mm9.fa'
-                                    Reads:
-                                        Samples:
-                                            grp1: 
-                                                - SRR2119601
-                                                - SRR2119602
-                                        Controls:
-                                    Readtype: single
-                                    Peaktype: {peaktype}
-                                    Aligner: {aligner}
-                                    Deduplicator: {deduplicator}
-                                    Peakcaller: {peakcaller}
-                                    Threads: 6
-                                    """)
+                                        proj_file_info = textwrap.dedent(f"""
+                                        Author: {authors}
+                                        Project: Rube_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}
+                                        Genome:
+                                            Name: mm9
+                                            Location: '{working_dir}/mm9/mm9.fa'
+                                        Reads:
+                                            Samples:
+                                                grp1: 
+                                                    - SRR2119601
+                                                    - SRR2119602
+                                            Controls:
+                                        Readtype: single
+                                        Peaktype: {peaktype}
+                                        Aligner: {aligner}
+                                        Deduplicator: {deduplicator}
+                                        Peakcaller: {peakcaller}
+                                        Threads: 6
+                                        """)
                                     
                                     # Namani project files
                                     elif project == "Namani":
