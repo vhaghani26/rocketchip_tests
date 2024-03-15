@@ -245,8 +245,8 @@ def run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, pea
 ####################
 
 # Download genomes
-download_genome(mm9, working_dir)
-download_genome(hg38, working_dir)
+download_genome('mm9', working_dir)
+download_genome('hg38', working_dir)
 
 # Generate project_files
 generate_project_files(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
