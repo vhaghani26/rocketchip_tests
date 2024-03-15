@@ -213,7 +213,7 @@ def generate_snakefiles(working_dir, controltypes, projects, peaktypes, aligners
                                     
                                     # Create the snakefiles using Rocketchip
                                     print(f"Generating {snakefile_dir}/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}")
-                                    os.system(f'rocketchip {working_dir}/project_files/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}.yaml --data {snakefile_dir} --output_file {snakefile_dir}/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}')
+                                    os.system(f'rocketchip {working_dir}/project_files/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}.yaml --data {working_dir} --output_file {snakefile_dir}/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}')
 
 # Run Snakefiles 
 def run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests, output_path):
