@@ -8,6 +8,7 @@ python3 replicate_all_combos.py
 ## Import Modules ##
 ####################
 
+import pandas as pd
 import sys
 import os
 import textwrap
@@ -34,6 +35,16 @@ num_tests = 3
 ## Delineate Functions ##
 #########################
 
+def create_csv(working_dir):
+    # Create DataFrame for peak counting 
+    df = pd.DataFrame(columns=["Project", "Peak_Type", "Aligner", "Peak_Caller", "Deduplicator", "Control", "Test_Number", "Observed_Peaks"])
+    
+    # Combine directory path and filename
+    output_path = os.path.join(working_dir, 'observed_peaks.csv')
+    
+    # Save to CSV
+    df.to_csv(output_path, index=False)
+    
 def download_genome(genome, out_dir):
     genome_links = {
         'dm6': 'https://hgdownload.soe.ucsc.edu/goldenPath/dm6/bigZips/dm6.fa.gz',
@@ -172,6 +183,7 @@ def generate_project_files(working_dir, controltypes, projects, peaktypes, align
                                             Samples:
                                                 grp1: 
                                                     - SRR10588628
+                                            Controls:
                                         Readtype: single
                                         Peaktype: {peaktype}
                                         Aligner: {aligner}
@@ -215,7 +227,7 @@ def generate_snakefiles(working_dir, controltypes, projects, peaktypes, aligners
                                     os.system(f'rocketchip {working_dir}/project_files/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}.yaml --data {working_dir} --output_file {snakefile_dir}/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}')
 
 # Run Snakefiles 
-def run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests, output_path):
+def run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests):
     # Run Snakemake for all combinations
     for control in controltypes:
         for project in projects:
@@ -236,20 +248,106 @@ def run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, pea
                                     os.system('pwd')
                                     # Run snakefile
                                     os.system(f'snakemake -j 4 -s {project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}')
+
+                                    # Count peaks for MACS3 outputs
+                                    if peakcaller == "macs3":
+                                        os.chdir('06_macs3_peaks')
+                                        if control == "with_control":
+                                            if peaktype == "narrow":
+                                                if os.path.isfile('grp1_ctl1_peaks.narrowPeak'):
+                                                    with open('grp1_ctl1_peaks.narrowPeak', 'r') as file:
+                                                        obs_peak_num = sum(1 for line in file)
+                                                else:
+                                                    obs_peak_num = 0
+                                            elif peaktype == "broad":
+                                                if os.path.isfile('grp1_ctl1_peaks.broadPeak'):
+                                                    with open('grp1_ctl1_peaks.broadPeak', 'r') as file:
+                                                        obs_peak_num = sum(1 for line in file)
+                                                else:
+                                                    obs_peak_num = 0
+                                        elif control == "no_control":
+                                            if peaktype == "narrow":
+                                                if os.path.isfile('grp1_peaks.narrowPeak'):
+                                                    with open('grp1_peaks.narrowPeak', 'r') as file:
+                                                        obs_peak_num = sum(1 for line in file)
+                                                else:
+                                                    obs_peak_num = 0
+                                            elif peaktype == "broad":
+                                                if os.path.isfile('grp1_peaks.broadPeak'):
+                                                    with open('grp1_peaks.broadPeak', 'r') as file:
+                                                        obs_peak_num = sum(1 for line in file)
+                                                else:
+                                                    obs_peak_num = 0
+                                        os.chdir('..')
+
+                                    # Count peaks for Cisgenome outputs
+                                    elif peakcaller == "cisgenome":
+                                        os.chdir('06_cisgenome_peaks')
+                                        if os.path.isfile('grp1_ctl1_peak.cod'):
+                                            # Open the file for reading
+                                            with open("grp1_ctl1_peak.cod", "r") as file:
+                                                obs_peak_num = sum(1 for line in file)
+                                                obs_peak_num = obs_peak_num - 1
+                                        else:
+                                            obs_peak_num = 0
+                                        os.chdir('..')
+
+                                    # Count peaks for Genrich outputs
+                                    elif peakcaller == "genrich":
+                                        os.chdir('06_genrich_peaks')
+                                        if control == "with_control":
+                                            if os.path.isfile('grp1_ctl1_peak.narrowPeak'):
+                                                with open('grp1_ctl1_peak.narrowPeak', 'r') as file:
+                                                    obs_peak_num = sum(1 for line in file)
+                                            else:
+                                                obs_peak_num = 0
+                                        elif control == "no_control":
+                                            if os.path.isfile('grp1_peak.narrowPeak'):
+                                                with open('grp1_peak.narrowPeak', 'r') as file:
+                                                    obs_peak_num = sum(1 for line in file)
+                                            else:
+                                                obs_peak_num = 0
+                                        os.chdir('..')
                                     
-                                    # Go back to original directory
+                                    # Count peaks for PePr outputs
+                                    elif peakcaller == "pepr":
+                                        os.chdir('06_pepr_peaks')
+                                        if os.path.isfile('grp1_ctl1__PePr_peaks.bed'):
+                                            with open('grp1_ctl1__PePr_peaks.bed', 'r') as file:
+                                                obs_peak_num = sum(1 for line in file)
+                                        else:
+                                            obs_peak_num = 0
+                                        os.chdir('..')
+                                    
+                                    # View peak number
+                                    print(f'Observed peaks: {obs_peak_num}')
+                                    
+                                    # Add metadata and peak count to data frame
+                                    input_path = os.path.join(working_dir, 'observed_peaks.csv')
+                                    df = pd.read_csv(input_path)
+                                    df.loc[len(df)] = [project, peaktype, aligner, peakcaller, deduplicator, control, i, obs_peak_num]
+                                    
+                                    # Go back to original working directory
                                     os.chdir(f'../../')
+                                    
+                                    # Remove snakefile and data outputs to prevent file storage issues
+                                    os.rmdir(f'{working_dir}/snakefiles/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}')
 
 ####################
 ## Run Everything ##
 ####################
 
+# Create master dataframe
+create_csv(working_dir)
+
+'''
 # Download genomes
 download_genome('mm9', working_dir)
 download_genome('hg38', working_dir)
 
 # Generate project_files
 generate_project_files(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
+'''
 
 # Generate Snakefiles
 generate_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
