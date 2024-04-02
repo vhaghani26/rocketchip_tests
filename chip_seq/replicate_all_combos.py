@@ -13,6 +13,7 @@ import sys
 import os
 import textwrap
 import subprocess 
+import shutil
 
 ###########################
 ## Set Working Variables ##
@@ -326,31 +327,32 @@ def run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, pea
                                     input_path = os.path.join(working_dir, 'observed_peaks.csv')
                                     df = pd.read_csv(input_path)
                                     df.loc[len(df)] = [project, peaktype, aligner, peakcaller, deduplicator, control, i, obs_peak_num]
+                                    df.to_csv(input_path, index=False)
                                     
                                     # Go back to original working directory
                                     os.chdir(f'../../')
                                     
                                     # Remove snakefile and data outputs to prevent file storage issues
-                                    os.rmdir(f'{working_dir}/snakefiles/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}')
+                                    shutil.rmtree(f'{working_dir}/snakefiles/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}', ignore_errors = True)
 
 ####################
 ## Run Everything ##
 ####################
 
+'''
 # Create master dataframe
 create_csv(working_dir)
 
-'''
 # Download genomes
 download_genome('mm9', working_dir)
 download_genome('hg38', working_dir)
 
 # Generate project_files
 generate_project_files(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
-'''
 
 # Generate Snakefiles
 generate_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
+'''
 
 # Run Snakefiles
 run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
