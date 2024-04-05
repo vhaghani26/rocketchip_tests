@@ -243,7 +243,7 @@ def run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, pea
                                     continue
                                     
                                 # Handle combinations that already ran (ran into error because I forgot to install cisgenome and don't want to rerun macs3):
-                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (aligner == "macs3") and (control == "with_control"):
+                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "macs3") and (control == "with_control"):
                                     continue
                                     
                                 # Run snakefiles and count peaks
