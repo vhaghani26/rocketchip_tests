@@ -339,6 +339,119 @@ def run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, pea
                                     # Remove snakefile and data outputs to prevent file storage issues
                                     shutil.rmtree(f'{working_dir}/snakefiles/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}', ignore_errors = True)
 
+# Run SLURM scripts
+def run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests):
+    # Generate all SLURM scripts
+    for control in controltypes:
+        for project in projects:
+            for peaktype in peaktypes:
+                for aligner in aligners:
+                    for peakcaller in peakcallers:
+                        for deduplicator in deduplicators:
+                            for i in range(1, num_tests + 1):    
+                                
+                                # Handle illegal combinations
+                                if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
+                                    continue
+                                                                    
+                                # Handle combinations that already ran (it was taking too long so now I want to do it on SLURM to parallelize):
+                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "macs3") and (control == "with_control"):
+                                    continue
+                                    
+                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "cisgenome") and (control == "with_control"):
+                                    continue
+                                    
+                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "genrich") and (control == "with_control"):
+                                    continue
+                                    
+                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "pepr") and (control == "with_control") and (deduplicator == "samtools"):
+                                    continue
+                                    
+                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "pepr") and (control == "with_control") and (deduplicator == "no_deduplication") and (i == 1):
+                                    continue
+                                    
+                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "pepr") and (control == "with_control") and (deduplicator == "no_deduplication") and (i == 2):
+                                    continue
+                                
+                                else:
+                                    
+                                    # Set up directories
+                                    snakefile_dir = f'{working_dir}/snakefiles/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}'
+                                    
+                                    if not os.path.exists(f'{working_dir}/peak_counts/'):
+                                        os.system(f'mkdir {working_dir}/peak_counts')
+                                    peak_count_dir = f'{working_dir}/peak_counts'
+                                    
+                                    if not os.path.exists(f'{working_dir}/slurm_files/'):
+                                        os.system(f'mkdir {working_dir}/slurm_files')
+                                    slurm_out_dir = f'{working_dir}/slurm_files'
+                                    
+                                    slurm_file_info = textwrap.dedent(f"""
+                                    #!/bin/bash
+                                    #
+                                    #SBATCH -p production               # Partition, or queue, to assign to
+                                    #SBATCH -J rocketchip               # Name for job
+                                    #SBATCH -o rocketchip.j%j.out       # File to write STDOUT to
+                                    #SBATCH -e rocketchip.j%j.err       # File to write error output to
+                                    #SBATCH -N 1                        # Number of nodes/computers
+                                    #SBATCH -n 1                        # Number of cores
+                                    #SBATCH -c 8                        # Eight cores per task
+                                    #SBATCH -t 24:00:00                 # Ask for no more than 24 hours
+                                    #SBATCH --mem=75gb                  # Ask for no more than 75 GB of memory
+                                    #SBATCH --chdir={snakefile_dir}     # Directory I want the job to run in
+                                    
+                                    # Run aklog to deal with SLURM bug
+                                    aklog
+                                    
+                                    # Source profile so conda can be used
+                                    source /share/korflab/home/viki/.profile
+                                    
+                                    # Activate environment
+                                    conda activate /share/korflab/home/viki/anaconda3/rocketchip_test
+                                    
+                                    # Fail on weird errors
+                                    set -o nounset
+                                    set -o errexit
+                                    set -x
+                                    
+                                    # Run snakemake
+                                    snakemake -j 4 -s {project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}
+                                    
+                                    # Count peaks
+                                    python3 count_peaks.py --in_dir {snakefile_dir} --out_dir {peak_count_dir}
+
+                                    # Change directories
+                                    cd {slurm_out_dir}
+                                    
+                                    # Delete data files so I don't use up all the disc space again
+                                    rm -rf {snakefile_dir}
+                                    
+                                    # Print out various information about the job
+                                    env | grep SLURM  # Print out values of the current jobs SLURM environment variables
+                                    
+                                    scontrol show job ${{SLURM_JOB_ID}} # Print out final statistics about resource uses before job exits
+                                    
+                                    sstat --format 'JobID,MaxRSS,AveCPU' -P ${{SLURM_JOB_ID}}.batch
+                                    
+                                    # Note: Run dos2unix {{filename}} if sbatch DOS line break error occurs
+                                    """)
+                                    
+                                    # Write file 
+                                    os.system(f'touch {slurm_out_dir}/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}.slurm')
+                                    with open(f'{slurm_out_dir}/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}.slurm', 'w') as f:
+                                        f.write(f'{slurm_file_info}')
+                                    os.system(f'sed -i \'1d\' {slurm_out_dir}/{project}_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}.slurm')
+                                    
+    # Run dos2unix for all SLURM scripts
+    for filename in os.listdir(slurm_out_dir):
+        if filename.endswith(".slurm"):
+            os.system("dos2unix " + os.path.join(slurm_out_dir, filename))
+    
+    # Submit the SLURM scripts
+    for filename in os.listdir(slurm_out_dir):
+        if filename.endswith(".slurm"):
+            os.system("sbatch " + os.path.join(slurm_out_dir, filename))
+            
 ####################
 ## Run Everything ##
 ####################
@@ -356,7 +469,10 @@ generate_project_files(working_dir, controltypes, projects, peaktypes, aligners,
 
 # Generate Snakefiles
 generate_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
-'''
 
 # Run Snakefiles
 run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
+'''
+
+# Make and run SLURM scripts 
+run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
