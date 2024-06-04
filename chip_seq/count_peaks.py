@@ -9,7 +9,9 @@ python3 count_peaks.py --in_dir {Snakefile directory} --out_dir {peak counts}
 ## Import Modules ##
 ####################
 
+import argparse
 import os
+import re
 
 #####################
 ## Set Up Argparse ##
@@ -32,7 +34,12 @@ arg = parser.parse_args()
 ## Count Peaks ##
 #################
 
-def count_peaks(in_dir, out_dir):                 
+def count_peaks(in_dir, out_dir):
+
+    # Change into sample directory
+    original_dir = os.getcwd()
+    os.chdir(in_dir)
+    
     # Count peaks for MACS3 outputs
     if "macs3" in in_dir:
         os.chdir('06_macs3_peaks')
@@ -103,20 +110,32 @@ def count_peaks(in_dir, out_dir):
             obs_peak_num = 0
         os.chdir('..')
     
-    # Get basename of input directory only
-    input_dir = os.path.basename(in_dir)
+    # Return to original directory
+    os.chdir(original_dir)
     
-    # Check if input_dir ends with '/' and remove it if so
-    if input_dir.endswith('/'):
-        input_dir = input_dir[:-1]
+    # Get sample name only
+    sample_name = os.path.basename(in_dir)
+    
+    match = re.search(r'[^/]+/$', sample_name)
+    if match:
+        input_dir = match.group(0).rstrip('/')
+        print("Sample:", input_dir)
+    else:
+        input_dir = sample_name
+        print("Sample:", input_dir)
+    
+    # Name output file
+    peakfile = input_dir + "_peaks"
     
     # Set up output directory 
-    output_file = os.join(out_dir, input_dir + "_peaks")
+    output_file = os.path.join(out_dir, peakfile)
+    
+    print("Output file:", output_file)
     
     # Save peak count
-    os.system(f'touch {output_file}')
+    os.system(f'touch "{output_file}"')
     with open(f'{output_file}', 'w') as f:
-        f.write(f'{obs_peak_num}')
+        f.write(f'{obs_peak_num}')  
 
 ######################
 ## Execute Function ##

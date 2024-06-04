@@ -25,10 +25,10 @@ working_dir = '/share/korflab/home/viki/rocketchip_tests/chip_seq' # Do NOT end 
 
 # Combinatorial testing variables
 controltypes = ["with_control", "no_control"] 
-projects = ["Rube", "Namani"] 
+projects = ["Namani"] #["Rube", "Namani"] 
 peaktypes = ["narrow", "broad"]
 aligners = ["bwa_mem", "bowtie2", "STAR"]
-peakcallers = ["macs3", "cisgenome", "genrich", "pepr"]
+peakcallers = ["pepr"] #["macs3", "cisgenome", "genrich", "pepr"]
 deduplicators = ["samtools", "no_deduplication", "sambamba", "picard"]
 num_tests = 3
 
@@ -126,26 +126,52 @@ def generate_project_files(working_dir, controltypes, projects, peaktypes, align
                                     
                                     # Namani project files
                                     elif project == "Namani":
-                                        proj_file_info = textwrap.dedent(f"""
-                                        Author: {authors}
-                                        Project: Namani_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}
-                                        Genome:
-                                            Name: hg38
-                                            Location: '{working_dir}/hg38/hg38.fa'
-                                        Reads:
-                                            Samples:
-                                                grp1: 
-                                                    - SRR10588628
-                                            Controls:
-                                                ctl1: 
-                                                    - SRR10588629
-                                        Readtype: single
-                                        Peaktype: {peaktype}
-                                        Aligner: {aligner}
-                                        Deduplicator: {deduplicator}
-                                        Peakcaller: {peakcaller}
-                                        Threads: 6
-                                        """)
+                                    
+                                        if peakcaller == "cisgenome" or peakcaller == "macs3" or peakcaller == "genrich":
+                                            proj_file_info = textwrap.dedent(f"""
+                                            Author: {authors}
+                                            Project: Namani_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}
+                                            Genome:
+                                                Name: hg38
+                                                Location: '{working_dir}/hg38/hg38.fa'
+                                            Reads:
+                                                Samples:
+                                                    grp1: 
+                                                        - SRR10588628
+                                                Controls:
+                                                    ctl1: 
+                                                        - SRR10588629
+                                            Readtype: single
+                                            Peaktype: {peaktype}
+                                            Aligner: {aligner}
+                                            Deduplicator: {deduplicator}
+                                            Peakcaller: {peakcaller}
+                                            Threads: 6
+                                            """)
+                                        
+                                        # Cannot have less than one sample, so adding same sample as replicate
+                                        elif peakcaller == "pepr":
+                                            proj_file_info = textwrap.dedent(f"""
+                                            Author: {authors}
+                                            Project: Namani_{control}_{peaktype}_{aligner}_{peakcaller}_{deduplicator}_test{i}
+                                            Genome:
+                                                Name: hg38
+                                                Location: '{working_dir}/hg38/hg38.fa'
+                                            Reads:
+                                                Samples:
+                                                    grp1: 
+                                                        - SRR10588628
+                                                        - SRR10588628
+                                                Controls:
+                                                    ctl1: 
+                                                        - SRR10588629
+                                            Readtype: single
+                                            Peaktype: {peaktype}
+                                            Aligner: {aligner}
+                                            Deduplicator: {deduplicator}
+                                            Peakcaller: {peakcaller}
+                                            Threads: 6
+                                            """)
                                     
                                 elif control == "no_control":
                                     if peakcaller == "cisgenome" or peakcaller == "pepr": continue
@@ -214,6 +240,8 @@ def generate_snakefiles(working_dir, controltypes, projects, peaktypes, aligners
                     for peakcaller in peakcallers:
                         for deduplicator in deduplicators:
                             for i in range(1, num_tests + 1):
+                            
+                                # Handle illegal combinations
                                 if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
                                     continue
                                     
@@ -241,11 +269,7 @@ def run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, pea
                                 # Handle illegal combinations
                                 if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
                                     continue
-                                    
-                                # Handle combinations that already ran (ran into error because I forgot to install cisgenome and don't want to rerun macs3):
-                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "macs3") and (control == "with_control"):
-                                    continue
-                                    
+                                
                                 # Run snakefiles and count peaks
                                 else:
                                     # Change into snakefile directory
@@ -353,25 +377,6 @@ def run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, 
                                 # Handle illegal combinations
                                 if (control == "no_control") and (peakcaller == "cisgenome" or peakcaller == "pepr"):
                                     continue
-                                                                    
-                                # Handle combinations that already ran (it was taking too long so now I want to do it on SLURM to parallelize):
-                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "macs3") and (control == "with_control"):
-                                    continue
-                                    
-                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "cisgenome") and (control == "with_control"):
-                                    continue
-                                    
-                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "genrich") and (control == "with_control"):
-                                    continue
-                                    
-                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "pepr") and (control == "with_control") and (deduplicator == "samtools"):
-                                    continue
-                                    
-                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "pepr") and (control == "with_control") and (deduplicator == "no_deduplication") and (i == 1):
-                                    continue
-                                    
-                                elif (project == "Rube") and (peaktype == "narrow") and (aligner == "bwa_mem") and (peakcaller == "pepr") and (control == "with_control") and (deduplicator == "no_deduplication") and (i == 2):
-                                    continue
                                 
                                 else:
                                     
@@ -396,15 +401,9 @@ def run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, 
                                     #SBATCH -N 1                        # Number of nodes/computers
                                     #SBATCH -n 1                        # Number of cores
                                     #SBATCH -c 8                        # Eight cores per task
-                                    #SBATCH -t 24:00:00                 # Ask for no more than 24 hours
-                                    #SBATCH --mem=75gb                  # Ask for no more than 75 GB of memory
+                                    #SBATCH -t 15:00:00                 # Ask for no more than 15 hours
+                                    #SBATCH --mem=50gb                  # Ask for no more than 75 GB of memory
                                     #SBATCH --chdir={snakefile_dir}     # Directory I want the job to run in
-                                    
-                                    # Run aklog to deal with SLURM bug
-                                    aklog
-                                    
-                                    # Source profile so conda can be used
-                                    source /share/korflab/home/viki/.profile
                                     
                                     # Activate environment
                                     conda activate /share/korflab/home/viki/anaconda3/rocketchip_test
@@ -426,13 +425,6 @@ def run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, 
                                     # Delete data files so I don't use up all the disc space again
                                     rm -rf {snakefile_dir}
                                     
-                                    # Print out various information about the job
-                                    env | grep SLURM  # Print out values of the current jobs SLURM environment variables
-                                    
-                                    scontrol show job ${{SLURM_JOB_ID}} # Print out final statistics about resource uses before job exits
-                                    
-                                    sstat --format 'JobID,MaxRSS,AveCPU' -P ${{SLURM_JOB_ID}}.batch
-                                    
                                     # Note: Run dos2unix {{filename}} if sbatch DOS line break error occurs
                                     """)
                                     
@@ -446,23 +438,22 @@ def run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, 
     for filename in os.listdir(slurm_out_dir):
         if filename.endswith(".slurm"):
             os.system("dos2unix " + os.path.join(slurm_out_dir, filename))
-    
+
     # Submit the SLURM scripts
     for filename in os.listdir(slurm_out_dir):
         if filename.endswith(".slurm"):
             os.system("sbatch " + os.path.join(slurm_out_dir, filename))
-            
+    
 ####################
 ## Run Everything ##
 ####################
 
-'''
 # Create master dataframe
-create_csv(working_dir)
+#create_csv(working_dir)
 
 # Download genomes
-download_genome('mm9', working_dir)
-download_genome('hg38', working_dir)
+#download_genome('mm9', working_dir)
+#download_genome('hg38', working_dir)
 
 # Generate project_files
 generate_project_files(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
@@ -471,8 +462,7 @@ generate_project_files(working_dir, controltypes, projects, peaktypes, aligners,
 generate_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
 
 # Run Snakefiles
-run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
-'''
+#run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
 
 # Make and run SLURM scripts 
-run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
+#run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
