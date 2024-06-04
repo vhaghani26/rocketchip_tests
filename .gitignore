@@ -3,6 +3,7 @@ tools
 rocketchip
 .snakemake/
 */.snakemake/
+*/.ipynb_checkpoints
 exp_vs_obs/seq_data/paired_narrow/
 exp_vs_obs/seq_data/paired_broad/
 exp_vs_obs/seq_data/single_narrow/
