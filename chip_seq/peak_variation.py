@@ -10,8 +10,25 @@ variations = df.groupby(['Project', 'Control', 'Peak_Type', 'Aligner', 'Peak_Cal
     Range_in_Called_Peaks=('Peak_Counts', lambda x: x.max() - x.min())
 )
 
-# Filter combinations with variation in Peak_Counts
+# Total number of combinations
+total_combinations = variations.shape[0]
+
+# Combinations with variation in Peak_Counts
 combinations_with_variation = variations[variations['Peak_Counts_Unique'] > 1]
 
-# Print the combinations with their peak counts range and actual range
+# Number of combinations with variability
+num_combinations_with_variation = combinations_with_variation.shape[0]
+
+# Number of combinations with 100% reproducibility
+num_combinations_reproducible = total_combinations - num_combinations_with_variation
+
+# Percentages
+percent_with_variation = (num_combinations_with_variation / total_combinations) * 100
+percent_reproducible = (num_combinations_reproducible / total_combinations) * 100
+
+# Print the results
+print(f"Total number of combinations: {total_combinations}")
+print(f"Number of combinations with variability: {num_combinations_with_variation} ({percent_with_variation:.2f}%)")
+print(f"Number of combinations with 100% reproducibility: {num_combinations_reproducible} ({percent_reproducible:.2f}%)")
+print("\nCombinations with variation in Peak_Counts:")
 print(combinations_with_variation)
