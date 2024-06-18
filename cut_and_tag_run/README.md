@@ -1,8 +1,8 @@
 # Validating CUT&Tag and CUT&RUN
 
-In order to validate Rocketchip's ability to analyze CUT&Tag and CUT&RUN data, we are running data from the study ["Identification of chromatin states during zebrafish gastrulation using CUT&RUN and CUT&Tag"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8976701/) by Akdogan-Ozdilek et al. through Rocketchip using Bowtie2, Picard, and MACS3.
+In order to validate Rocketchip's ability to analyze CUT&Tag and CUT&RUN data, we ran data from the study ["Identification of chromatin states during zebrafish gastrulation using CUT&RUN and CUT&Tag"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8976701/) by Akdogan-Ozdilek et al. 2023 through Rocketchip using Bowtie2, Picard, and MACS3.
 
-Note: For reasons that elude me (presumably processing at different times), the CUT&RUN data set had a mix of single- and paired-end reads, which require different processing steps and were therefore split into analyses corresponding to their endedness.
+Note: For reasons that elude me (presumably sequencing at different times), the CUT&RUN data set had a mix of single- and paired-end reads, which require different processing steps and were therefore split into analyses corresponding to their endedness.
 
 ## Instructions
 
