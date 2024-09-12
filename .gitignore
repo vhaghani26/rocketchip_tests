@@ -6,6 +6,9 @@ rocketchip
 */.ipynb_checkpoints
 chip_seq/peak_counts/
 chip_seq/*heatmap.pdf
+functional_test/project_files/
+functional_test/snakefiles/
+functional_test/seq_data/
 exp_vs_obs/seq_data/paired_narrow/
 exp_vs_obs/seq_data/paired_broad/
 exp_vs_obs/seq_data/single_narrow/
