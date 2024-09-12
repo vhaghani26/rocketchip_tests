@@ -15,9 +15,6 @@ import pandas as pd
 import os
 import textwrap
 import subprocess 
-import matplotlib.pyplot as plt
-import numpy as np
-import scipy.stats as stats
 
 ###########################
 ## Set Working Variables ##
@@ -26,6 +23,7 @@ import scipy.stats as stats
 # User-specific variables
 authors = 'Viktoria_Haghani'
 working_dir = '/share/korflab/home/viki/rocketchip_tests/functional_test' # Do NOT end the directory name with / here
+output_path = 'peaks_counts_before_updates.csv'
 
 # Combinatorial testing variables
 controltypes = ["with_control", "no_control"]  
@@ -372,13 +370,13 @@ def count_peaks(working_dir, controltypes, readtypes, peaktypes, aligners, peakc
 ####################
 
 # Generate project_files
-#generate_project_files(authors = authors, working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+generate_project_files(authors = authors, working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Generate Snakefiles
-#generate_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+generate_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Run Snakefiles
-#run_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
+run_snakefiles(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests)
 
 # Count peaks and calculate statistics based on peak calling
-count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = 'peaks_counts_before_updates.csv')
+count_peaks(working_dir = working_dir, controltypes = controltypes, readtypes = readtypes, peaktypes = peaktypes, aligners = aligners, peakcallers = peakcallers, deduplicators = deduplicators, num_tests = num_tests, output_path = output_path)
