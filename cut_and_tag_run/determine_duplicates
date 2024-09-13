@@ -1,0 +1,54 @@
+import os
+import glob
+
+# Define the directory containing BAM files
+bam_dir = "04_bam_files"
+
+# Function to get the list of sample names from the directory
+def get_sample_names(directory):
+    bam_files = glob.glob(f"{directory}/*.bam")
+    samples = [os.path.basename(bam_file).split('.')[0] for bam_file in bam_files]
+    return samples
+
+# List of samples
+samples = get_sample_names(bam_dir)
+
+rule all:
+    input:
+        expand("00_logs/{sample}_duplication_percentage.txt", sample=samples)
+
+rule markdup_no_rm:
+    input:
+        "04_bam_files/{sample}.sorted.fixmate.bam"
+    output:
+        "04_bam_files/{sample}.sorted.fixmate.markdup.bam"
+    log:
+        "00_logs/{sample}_markdup_no_rm.log"
+    shell:
+        "samtools markdup -@ 1 '{input}' '{output}' 2> '{log}'"
+
+rule flagstat:
+    input:
+        "04_bam_files/{sample}.sorted.fixmate.markdup.bam"
+    output:
+        "00_logs/{sample}_flagstat.txt"
+    log:
+        "00_logs/{sample}_flagstat.log"
+    shell:
+        "samtools flagstat '{input}' > '{output}' 2> '{log}'"
+
+rule calculate_duplication_percentage:
+    input:
+        "00_logs/{sample}_flagstat.txt"
+    output:
+        "00_logs/{sample}_duplication_percentage.txt"
+    run:
+        with open(input[0], 'r') as f:
+            lines = f.readlines()
+            total_reads = int([line for line in lines if 'in total' in line][0].split()[0])
+            duplicates = int([line for line in lines if 'duplicates' in line][0].split()[0])
+            duplication_percentage = (duplicates / total_reads) * 100
+        with open(output[0], 'w') as f:
+            f.write(f"Total Reads: {total_reads}\n")
+            f.write(f"Duplicate Reads: {duplicates}\n")
+            f.write(f"Duplicate Percentage: {duplication_percentage:.2f}%\n")
