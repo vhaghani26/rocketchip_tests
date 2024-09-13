@@ -51,6 +51,10 @@ snakemake -j 4 -s cut_and_run_pe
 
 The original study describes different protocols for processing CUT&RUN vs. CUT&Tag data. It is important to note that the purpose of this experiment is not to reproduce identical results, but rather to show that Rocketchip can be applied to CUT&Tag and CUT&RUN data relatively successfully. As such, we have chosen to compare alignment rates for each sample, which were reported as Supplementary Table 2 of the original study. To carry out our analysis, we have tried to match software as appropriately as possible for each analysis. For CUT&RUN, we separated the single- and paired-end reads into separate analyses as required by Rocketchip, aligned the data with Bowtie2, deduplicated with Samtools, and ran broad peak-calling with MACS3. For the CUT&Tag data, we aligned the data with Bowtie2, deduplicated with Picard, and ran broad peak-calling with MACS3. One of the primary differences was that trimming was not performed with Rocketchip, whereas the original study conducted trimming. Furthermore, there were some differences in command line arguments, as Rocketchip was employed using the preset parameters. 
 
+## Determining Raw Read Count
+
+The FastQC analysis reports containing the read counts were checked for the raw data and processed data. For the paired-end data, FastQC reports are split into forward and reverse files, so the read count is added between the forward and reverse reads.
+
 ## Determining Alignment
 
 Rocketchip outputs logs containing the standard error of every step. For the alignment, these are named `{sample}_align_reads_err.log`. It is the only log output containing "align" in the file name. Therefore, to assess the alignment, I ran:
