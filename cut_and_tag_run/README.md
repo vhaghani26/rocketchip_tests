@@ -51,6 +51,8 @@ snakemake -j 4 -s cut_and_run_pe
 
 The original study describes different protocols for processing CUT&RUN vs. CUT&Tag data. It is important to note that the purpose of this experiment is not to reproduce identical results, but rather to show that Rocketchip can be applied to CUT&Tag and CUT&RUN data relatively successfully. As such, we have chosen to compare alignment rates for each sample, which were reported as Supplementary Table 2 of the original study. To carry out our analysis, we have tried to match software as appropriately as possible for each analysis. For CUT&RUN, we separated the single- and paired-end reads into separate analyses as required by Rocketchip, aligned the data with Bowtie2, deduplicated with Samtools, and ran broad peak-calling with MACS3. For the CUT&Tag data, we aligned the data with Bowtie2, deduplicated with Picard, and ran broad peak-calling with MACS3. One of the primary differences was that trimming was not performed with Rocketchip, whereas the original study conducted trimming. Furthermore, there were some differences in command line arguments, as Rocketchip was employed using the preset parameters. 
 
+## Determining Alignment
+
 Rocketchip outputs logs containing the standard error of every step. For the alignment, these are named `{sample}_align_reads_err.log`. It is the only log output containing "align" in the file name. Therefore, to assess the alignment, I ran:
 
 ```
@@ -61,4 +63,20 @@ for file in *align*; do
 done
 ```
 
-Results were visualized using the [cut_and_tag_run.ipynb](https://github.com/vhaghani26/rocketchip_tests/blob/main/cut_and_tag_run/cut_and_tag_run.ipynb).
+## Determining Duplicate Percentage
+
+After the pipeline was run for each data set, I ran:
+
+```
+snakemake -j 3 -s determine_duplicates
+```
+
+This outputs a file in the 00_logs/ directory that contains information regarding the number of duplicate reads and duplicate percentages. To quickly visualize this, I ran: 
+
+```
+for file in 00_logs/*_duplication_percentage.txt; do sample=$(basename "$file" _duplication_percentage.txt); echo "Sample: $sample"; cat "$file"; echo "------------------------"; done
+```
+
+## Visualization
+
+Results were originally visualized using the [cut_and_tag_run.ipynb](https://github.com/vhaghani26/rocketchip_tests/blob/main/cut_and_tag_run/cut_and_tag_run.ipynb), which yielded bar plots for comparison of alignment rates. However, upon further updates, we decided to report our results as the table above to include more in-depth information.
