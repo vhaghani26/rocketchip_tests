@@ -50,13 +50,13 @@ mv SRR2119604_5000.fastq.gz SRR2119604.fastq.gz
 
 ### Generate YAML File
 
-We started by generating the yaml file that has all the combinations we want to test. We generated it by running:
+We started by generating the yaml file (`snakefiles.yaml`) that has all the combinations we want to test. We generated it by running:
 
 ```
 python3 deep_dive_yaml.py
 ```
 
-This contains 19200 samples to test.
+This contains 19200 "samples" (these are each independent analysis combinations and trials) to test.
 
 ### Generate Project and Snakefiles
 
