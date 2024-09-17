@@ -100,6 +100,12 @@ generate_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, pe
 #run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
 ```
 
+Then we ran the script:
+
+```
+python3 replicate_all_combos.py
+```
+
 This generates the project files and snakefiles needed for Rocketchip. Because we are also not interested in storing the data or generating the bigwig files, as we are just focusing on peak counts in this analysis, we ran `rewrite_snakefiles.py` to make the intermediate outputs temporary up to when peaks are called and removed the quality control and bigwig steps. This was run using:
 
 ```
