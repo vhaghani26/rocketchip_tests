@@ -1,0 +1,22 @@
+#!/bin/bash python3 
+
+# Assign wildcard sample names
+configfile: "snakefiles.yaml"
+SAMPLES = config["samples"]
+
+rule all:
+	input: expand("peak_counts/{sample}_peaks", sample=SAMPLES)
+
+rule run_snakemake:
+	output: 
+		"peak_counts/{sample}_peaks"
+	shell: 
+		"""
+		cd snakefiles/{wildcards.sample}
+		pwd
+		rm -rf .snakemake/
+		snakemake -j 4 -s {wildcards.sample}
+		cd ../..
+		python3 count_peaks.py --in_dir snakefiles/{wildcards.sample} --out_dir peak_counts/
+		rm -rf snakefiles/{wildcards.sample}
+		"""
