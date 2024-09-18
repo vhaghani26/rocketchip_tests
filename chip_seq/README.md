@@ -117,5 +117,5 @@ python3 rewrite_snakefiles.py --indir snakefiles/
 While Snakemake natively supports parallelization, we'd like to further parellelize the analyses since there are 14400 analyses to be conducted. As such, we ran the entire analysis by running `snakefile_runner`, a Snakefile that parallelizes the jobs per analysis while also parallelizing the analyses themselves. It stores the final peak count in a file, deleting all the intermediates and stored data along the way so as not to overload the disc storage space. By combining everything into one rule, it also forces the every analysis to run to completion. This was done because we previously experienced issues running multiple analyses at once, where several hundred analyses would be half completed, filling our disc space, but none had any results documented yet. This portion was run using:
 
 ```
-snakefile -j 5 -s snakefile_runner
+snakemake -j 5 -s snakefile_runner
 ```
