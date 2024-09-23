@@ -119,3 +119,21 @@ While Snakemake natively supports parallelization, we'd like to further parellel
 ```
 snakemake -j 5 -s snakefile_runner
 ```
+
+This took a few days to run. Afterwards, we ran:
+
+```
+# Count all the peaks and create a CSV file documenting the results
+python3 peak_count_csv.py --in_dir peak_counts/ --out_dir .
+
+# Print out the combinations that yielded variation in peak-calling
+python3 peak_variation.py
+```
+
+This generated `peak_counts.csv` (we temporararily renamed the original `peak_counts.csv` to `original_peak_counts.csv` in order to view the output of this experiment without overwriting the original, but changed it back after naming this generated one to `new_peak_counts.csv`), which contained the list of all peak counts for the experiment. Then, the `peak_variation.py`, which confirmed that there were still trials with variation present. We assessed the significance of the variation using a 1-way ANOVA:
+
+```
+python3 anova.py
+```
+
+However, because almost every combination had identical peak-counts, we could not calculate the F-statistics or p-values. Therefore, we included a table highlighting the variation as a supplement instead.
