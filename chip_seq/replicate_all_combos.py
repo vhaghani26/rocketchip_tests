@@ -25,12 +25,12 @@ working_dir = '/share/korflab/home/viki/rocketchip_tests/chip_seq' # Do NOT end 
 
 # Combinatorial testing variables
 controltypes = ["with_control", "no_control"] 
-projects = ["Namani"] #["Rube", "Namani"] 
+projects = ["Rube"]#, "Namani"] 
 peaktypes = ["narrow", "broad"]
 aligners = ["bwa_mem", "bowtie2", "STAR"]
-peakcallers = ["pepr"] #["macs3", "cisgenome", "genrich", "pepr"]
+peakcallers = ["macs3", "cisgenome", "genrich", "pepr"]
 deduplicators = ["samtools", "no_deduplication", "sambamba", "picard"]
-num_tests = 3
+num_tests = 100
 
 #########################
 ## Delineate Functions ##
@@ -449,20 +449,20 @@ def run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, 
 ####################
 
 # Create master dataframe
-create_csv(working_dir)
+#create_csv(working_dir)
 
 # Download genomes
-download_genome('mm9', working_dir)
-download_genome('hg38', working_dir)
+#download_genome('mm9', working_dir)
+#download_genome('hg38', working_dir)
 
 # Generate project_files
-generate_project_files(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
+#generate_project_files(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
 
 # Generate Snakefiles
 generate_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
 
 # Run Snakefiles
-run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
+#run_snakefiles(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)
 
 # Make and run SLURM scripts 
 #run_slurm_scripts(working_dir, controltypes, projects, peaktypes, aligners, peakcallers, deduplicators, num_tests)

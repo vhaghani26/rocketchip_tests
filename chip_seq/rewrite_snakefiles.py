@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-Note: I ran this script in the exp_vs_obs/ directory:
+Note: I ran this script in the chip_seq/ directory:
     python3 rewrite_snakefiles.py --indir snakefiles/
 '''
 
@@ -46,7 +46,7 @@ for root, dirs, files in os.walk(arg.indir):
             # Remove empty lines
             filedata = '\n'.join([line for line in filedata.split('\n') if line.strip()])
             
-            # Make desired changes (changes are not made if the string to replace is not found)
+            # Make general changes (apply to all files)
             filedata = filedata.replace('expand("02_fastqc_analysis/', '#expand("02_fastqc_analysis/')
             filedata = filedata.replace('expand("05_bigwig_files', '#expand("05_bigwig_files')
             filedata = filedata.replace('output: "03_sam_files/{sample}.sam"', 'output: temp("03_sam_files/{sample}.sam")')
@@ -55,6 +55,10 @@ for root, dirs, files in os.walk(arg.indir):
             filedata = filedata.replace('output: "04_bam_files/{sample}.sorted.fixmate.bam"', 'output: temp("04_bam_files/{sample}.sorted.fixmate.bam")')
             filedata = filedata.replace('output: "04_bam_files/{sample}.sorted.dedup.bam"', 'output: temp("04_bam_files/{sample}.sorted.dedup.bam")')
             filedata = filedata.replace('output: "04_bam_files/{sample}.sorted.dedup.bam.bai"', 'output: temp("04_bam_files/{sample}.sorted.dedup.bam.bai")')
+            
+            # MACS3 has an issue with small read files (this data is subsetted) requiring the --nomodel flag, so I will manually add it
+            if "macs3 callpeak" in filedata:
+                filedata = filedata.replace('macs3 callpeak', 'macs3 callpeak --nomodel')
                        
             # Write the file out again
             with open(file_to_open, 'w') as file:
