@@ -6,6 +6,11 @@ rocketchip
 */.ipynb_checkpoints
 chip_seq/peak_counts/
 chip_seq/*heatmap.pdf
+chip_seq/new_peak_counts.csv
+chip_seq/old_peak_counts/
+chip_seq/single/
+chip_seq/snakefiles.yaml
+chip_seq/subsetted_data/
 functional_test/project_files/
 functional_test/snakefiles/
 functional_test/seq_data/
@@ -75,3 +80,6 @@ cut_and_tag_run/danRer11/
 cut_and_tag_run/paired/
 cut_and_tag_run/single/
 cut_and_tag_run/.ipynb_checkpoints/
+cut_and_tag_run/cut_and_run_pe_outputs/
+cut_and_tag_run/cut_and_run_se_outputs/
+cut_and_tag_run/cut_and_tag_outputs/
