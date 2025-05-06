@@ -1,6 +1,6 @@
 # Run Times
 
-Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHIP_DATA` or add them onto the ends of the commands as arguments. Also ensure that you are in the activated `rocketchip` Conda environment. 
+Before you begin, make sure you have installed Rocketchip and that you are in the activated `rocketchip` Conda environment. 
 
 | SRA ID      | Raw Read Count | Genome               | Real Time     | User Time     | System Time     |
 | :---------: | :------------: | :------------------: | :-----------: | :-----------: | :-------------: |

@@ -1,4 +1,4 @@
-# Replicability 
+# ChIP-seq Replicability 
 
 In order to prove that Rocketchip is capable of replicating experimental results and running all software combinations, we ran ChIP-seq data from the study ["Sequence features accurately predict genome-wide MeCP2 binding in vivo"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4820824/) by Rube et al. 2016 and ["Genome-wide global identification of NRF2 binding sites in A549 non-small cell lung cancer cells by ChIP-Seq reveals NRF2 regulation of genes involved in focal adhesion pathways"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6949066/#SD1) by Namani et al. 2019 using Rocketchip.
 

@@ -6,7 +6,7 @@ Note: For reasons that elude me (presumably sequencing at different times), the 
 
 ## Instructions
 
-Before you begin, make sure you have exported `ROCKETCHIP_SRC` and/or `ROCKETCHIP_DATA` or add them onto the ends of the commands as arguments (as seen below). Also ensure that you are in the activated `rocketchip` Conda environment. I ran the following to conduct the analysis for the CUT&Tag and CUT&RUN data.
+Before you begin, make sure you have installed Rocketchip and that you are in the activated `rocketchip` Conda environment. I ran the following to conduct the analysis for the CUT&Tag and CUT&RUN data.
 
 CUT&Tag:
 
